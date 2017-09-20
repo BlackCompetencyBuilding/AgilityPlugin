@@ -1,0 +1,6 @@
+{
+    "AccessKey": "pm",
+    "SecretKey": "07June1990@",
+    "MaxRetries": "2",
+    "APIURL": "https://207.240.123.229/agility/api/"
+}

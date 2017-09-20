@@ -1,0 +1,534 @@
+2017/09/14 20:43:36 the Project name is:  StackImportSOE
+2017/09/14 20:43:36 projectName is:  StackImportSOE
+2017/09/14 20:43:36 URL:> https://207.240.123.229/agility/api/v3.0project
+2017/09/14 20:43:37 response Status: 404 Not Found
+2017/09/14 20:43:37 response Headers: map[Content-Length:[307] Server:[Jetty(9.2.10.v20150310)] Date:[Thu, 14 Sep 2017 15:03:39 GMT] Set-Cookie:[JSESSIONID=y7ordp69oachsf7ly8qk95u;Path=/;Secure JSESSIONID=y7ordp69oachsf7ly8qk95u;Path=/agility;Secure] Content-Type:[text/html; charset=ISO-8859-1] Cache-Control:[must-revalidate,no-cache,no-store]]
+2017/09/14 20:43:37 response Body: <html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Error 404 Not Found</title>
+</head>
+<body><h2>HTTP ERROR 404</h2>
+<p>Problem accessing /agility/api/v3.0project. Reason:
+<pre>    Not Found</pre></p><hr><i><small>Powered by Jetty://</small></i><hr/>
+
+</body>
+</html>
+
+2017/09/14 20:43:37 Unknown Element name is :  html
+2017/09/14 20:43:37 Unknown Element name is :  head
+2017/09/14 20:43:37 Unknown Element name is :  meta
+2017/09/14 20:43:37 Unknown Element name is :  title
+2017/09/14 20:43:37 Unknown Element name is :  body
+2017/09/14 20:43:37 Unknown Element name is :  h2
+2017/09/14 20:43:37 Unknown Element name is :  p
+2017/09/14 20:43:37 Unknown Element name is :  pre
+2017/09/14 20:43:37 Unknown Element name is :  hr
+2017/09/14 20:43:37 Unknown Element name is :  i
+2017/09/14 20:43:37 Unknown Element name is :  small
+2017/09/14 20:43:37 Unknown Element name is :  hr
+2017/09/14 20:43:37 Error in getting projectid:  there are no Projects with this name
+2017/09/14 20:43:37 errProj is:  there are no Projects with this name
+2017/09/14 20:43:37 ERROR! errProj is:  there are no Projects with this name
+2017/09/14 20:45:52 the Project name is:  StackImportSOE
+2017/09/14 20:45:52 projectName is:  StackImportSOE
+2017/09/14 20:45:52 URL:> https://207.240.123.229/agility/api/v3.4project
+2017/09/14 20:45:54 response Status: 404 Not Found
+2017/09/14 20:45:54 response Headers: map[Content-Length:[307] Server:[Jetty(9.2.10.v20150310)] Date:[Thu, 14 Sep 2017 15:05:56 GMT] Set-Cookie:[JSESSIONID=qtwsj8sn22sl3l9omfg6h8iz;Path=/;Secure JSESSIONID=qtwsj8sn22sl3l9omfg6h8iz;Path=/agility;Secure] Content-Type:[text/html; charset=ISO-8859-1] Cache-Control:[must-revalidate,no-cache,no-store]]
+2017/09/14 20:45:54 response Body: <html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Error 404 Not Found</title>
+</head>
+<body><h2>HTTP ERROR 404</h2>
+<p>Problem accessing /agility/api/v3.4project. Reason:
+<pre>    Not Found</pre></p><hr><i><small>Powered by Jetty://</small></i><hr/>
+
+</body>
+</html>
+
+2017/09/14 20:45:54 Unknown Element name is :  html
+2017/09/14 20:45:54 Unknown Element name is :  head
+2017/09/14 20:45:54 Unknown Element name is :  meta
+2017/09/14 20:45:54 Unknown Element name is :  title
+2017/09/14 20:45:54 Unknown Element name is :  body
+2017/09/14 20:45:54 Unknown Element name is :  h2
+2017/09/14 20:45:54 Unknown Element name is :  p
+2017/09/14 20:45:54 Unknown Element name is :  pre
+2017/09/14 20:45:54 Unknown Element name is :  hr
+2017/09/14 20:45:54 Unknown Element name is :  i
+2017/09/14 20:45:54 Unknown Element name is :  small
+2017/09/14 20:45:54 Unknown Element name is :  hr
+2017/09/14 20:45:54 Error in getting projectid:  there are no Projects with this name
+2017/09/14 20:45:54 errProj is:  there are no Projects with this name
+2017/09/14 20:45:54 ERROR! errProj is:  there are no Projects with this name
+2017/09/14 20:49:53 the Project name is:  StackImportSOE
+2017/09/14 20:49:53 projectName is:  StackImportSOE
+2017/09/14 20:49:53 URL:> https://207.240.123.229/agility/api/v3.4project
+2017/09/14 20:49:56 response Status: 404 Not Found
+2017/09/14 20:49:56 response Headers: map[Content-Type:[text/html; charset=ISO-8859-1] Cache-Control:[must-revalidate,no-cache,no-store] Content-Length:[307] Server:[Jetty(9.2.10.v20150310)] Date:[Thu, 14 Sep 2017 15:09:58 GMT] Set-Cookie:[JSESSIONID=z13psti31gpt7l8jib57tl4n;Path=/;Secure JSESSIONID=z13psti31gpt7l8jib57tl4n;Path=/agility;Secure]]
+2017/09/14 20:49:56 response Body: <html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Error 404 Not Found</title>
+</head>
+<body><h2>HTTP ERROR 404</h2>
+<p>Problem accessing /agility/api/v3.4project. Reason:
+<pre>    Not Found</pre></p><hr><i><small>Powered by Jetty://</small></i><hr/>
+
+</body>
+</html>
+
+2017/09/14 20:49:56 Unknown Element name is :  html
+2017/09/14 20:49:56 Unknown Element name is :  head
+2017/09/14 20:49:56 Unknown Element name is :  meta
+2017/09/14 20:49:56 Unknown Element name is :  title
+2017/09/14 20:49:56 Unknown Element name is :  body
+2017/09/14 20:49:56 Unknown Element name is :  h2
+2017/09/14 20:49:56 Unknown Element name is :  p
+2017/09/14 20:49:56 Unknown Element name is :  pre
+2017/09/14 20:49:56 Unknown Element name is :  hr
+2017/09/14 20:49:56 Unknown Element name is :  i
+2017/09/14 20:49:56 Unknown Element name is :  small
+2017/09/14 20:49:56 Unknown Element name is :  hr
+2017/09/14 20:49:56 Error in getting projectid:  there are no Projects with this name
+2017/09/14 20:49:56 errProj is:  there are no Projects with this name
+2017/09/14 20:49:56 ERROR! errProj is:  there are no Projects with this name
+2017/09/14 20:50:52 the Project name is:  StackImportSOE
+2017/09/14 20:50:52 projectName is:  StackImportSOE
+2017/09/14 20:50:52 URL:> https://207.240.123.229/agility/api/v3.4project
+2017/09/14 20:50:54 response Status: 404 Not Found
+2017/09/14 20:50:54 response Headers: map[Set-Cookie:[JSESSIONID=tzb5jgaf1c5ibcgrzodbyx1d;Path=/;Secure JSESSIONID=tzb5jgaf1c5ibcgrzodbyx1d;Path=/agility;Secure] Content-Type:[text/html; charset=ISO-8859-1] Cache-Control:[must-revalidate,no-cache,no-store] Content-Length:[307] Server:[Jetty(9.2.10.v20150310)] Date:[Thu, 14 Sep 2017 15:10:56 GMT]]
+2017/09/14 20:50:54 response Body: <html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Error 404 Not Found</title>
+</head>
+<body><h2>HTTP ERROR 404</h2>
+<p>Problem accessing /agility/api/v3.4project. Reason:
+<pre>    Not Found</pre></p><hr><i><small>Powered by Jetty://</small></i><hr/>
+
+</body>
+</html>
+
+2017/09/14 20:50:54 Unknown Element name is :  html
+2017/09/14 20:50:54 Unknown Element name is :  head
+2017/09/14 20:50:54 Unknown Element name is :  meta
+2017/09/14 20:50:54 Unknown Element name is :  title
+2017/09/14 20:50:54 Unknown Element name is :  body
+2017/09/14 20:50:54 Unknown Element name is :  h2
+2017/09/14 20:50:54 Unknown Element name is :  p
+2017/09/14 20:50:54 Unknown Element name is :  pre
+2017/09/14 20:50:54 Unknown Element name is :  hr
+2017/09/14 20:50:54 Unknown Element name is :  i
+2017/09/14 20:50:54 Unknown Element name is :  small
+2017/09/14 20:50:54 Unknown Element name is :  hr
+2017/09/14 20:50:54 Error in getting projectid:  there are no Projects with this name
+2017/09/14 20:50:54 errProj is:  there are no Projects with this name
+2017/09/14 20:50:54 ERROR! errProj is:  there are no Projects with this name
+2017/09/14 20:52:05 the Project name is:  StackImportSOE
+2017/09/14 20:52:05 projectName is:  StackImportSOE
+2017/09/14 20:52:05 URL:> https://207.240.123.229/agility/api/v3.2project
+2017/09/14 20:52:07 response Status: 404 Not Found
+2017/09/14 20:52:07 response Headers: map[Date:[Thu, 14 Sep 2017 15:12:09 GMT] Set-Cookie:[JSESSIONID=mrxzd8qe5r821vg73cobc7vh3;Path=/;Secure JSESSIONID=mrxzd8qe5r821vg73cobc7vh3;Path=/agility;Secure] Content-Type:[text/html; charset=ISO-8859-1] Cache-Control:[must-revalidate,no-cache,no-store] Content-Length:[307] Server:[Jetty(9.2.10.v20150310)]]
+2017/09/14 20:52:07 response Body: <html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Error 404 Not Found</title>
+</head>
+<body><h2>HTTP ERROR 404</h2>
+<p>Problem accessing /agility/api/v3.2project. Reason:
+<pre>    Not Found</pre></p><hr><i><small>Powered by Jetty://</small></i><hr/>
+
+</body>
+</html>
+
+2017/09/14 20:52:07 Unknown Element name is :  html
+2017/09/14 20:52:07 Unknown Element name is :  head
+2017/09/14 20:52:07 Unknown Element name is :  meta
+2017/09/14 20:52:07 Unknown Element name is :  title
+2017/09/14 20:52:07 Unknown Element name is :  body
+2017/09/14 20:52:07 Unknown Element name is :  h2
+2017/09/14 20:52:07 Unknown Element name is :  p
+2017/09/14 20:52:07 Unknown Element name is :  pre
+2017/09/14 20:52:07 Unknown Element name is :  hr
+2017/09/14 20:52:07 Unknown Element name is :  i
+2017/09/14 20:52:07 Unknown Element name is :  small
+2017/09/14 20:52:07 Unknown Element name is :  hr
+2017/09/14 20:52:07 Error in getting projectid:  there are no Projects with this name
+2017/09/14 20:52:07 errProj is:  there are no Projects with this name
+2017/09/14 20:52:07 ERROR! errProj is:  there are no Projects with this name
+2017/09/14 20:52:42 the Project name is:  StackImportSOE
+2017/09/14 20:52:42 projectName is:  StackImportSOE
+2017/09/14 20:52:42 URL:> https://207.240.123.229/agility/api/v3.2project
+2017/09/14 20:52:43 response Status: 404 Not Found
+2017/09/14 20:52:43 response Headers: map[Date:[Thu, 14 Sep 2017 15:12:45 GMT] Set-Cookie:[JSESSIONID=focagwela4l8164cku13ewaog;Path=/;Secure JSESSIONID=focagwela4l8164cku13ewaog;Path=/agility;Secure] Content-Type:[text/html; charset=ISO-8859-1] Cache-Control:[must-revalidate,no-cache,no-store] Content-Length:[307] Server:[Jetty(9.2.10.v20150310)]]
+2017/09/14 20:52:43 response Body: <html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Error 404 Not Found</title>
+</head>
+<body><h2>HTTP ERROR 404</h2>
+<p>Problem accessing /agility/api/v3.2project. Reason:
+<pre>    Not Found</pre></p><hr><i><small>Powered by Jetty://</small></i><hr/>
+
+</body>
+</html>
+
+2017/09/14 20:52:43 Unknown Element name is :  html
+2017/09/14 20:52:43 Unknown Element name is :  head
+2017/09/14 20:52:43 Unknown Element name is :  meta
+2017/09/14 20:52:43 Unknown Element name is :  title
+2017/09/14 20:52:43 Unknown Element name is :  body
+2017/09/14 20:52:43 Unknown Element name is :  h2
+2017/09/14 20:52:43 Unknown Element name is :  p
+2017/09/14 20:52:43 Unknown Element name is :  pre
+2017/09/14 20:52:43 Unknown Element name is :  hr
+2017/09/14 20:52:43 Unknown Element name is :  i
+2017/09/14 20:52:43 Unknown Element name is :  small
+2017/09/14 20:52:43 Unknown Element name is :  hr
+2017/09/14 20:52:43 Error in getting projectid:  there are no Projects with this name
+2017/09/14 20:52:43 errProj is:  there are no Projects with this name
+2017/09/14 20:52:43 ERROR! errProj is:  there are no Projects with this name
+2017/09/14 20:54:15 the Project name is:  StackImportSOE
+2017/09/14 20:54:15 projectName is:  StackImportSOE
+2017/09/14 20:54:15 URL:> https://207.240.123.229/agility/api/v3.2project
+2017/09/14 20:54:17 response Status: 404 Not Found
+2017/09/14 20:54:17 response Headers: map[Content-Length:[307] Server:[Jetty(9.2.10.v20150310)] Date:[Thu, 14 Sep 2017 15:14:19 GMT] Set-Cookie:[JSESSIONID=16hlth00i97qo1u93mile0rcgl;Path=/;Secure JSESSIONID=16hlth00i97qo1u93mile0rcgl;Path=/agility;Secure] Content-Type:[text/html; charset=ISO-8859-1] Cache-Control:[must-revalidate,no-cache,no-store]]
+2017/09/14 20:54:17 response Body: <html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Error 404 Not Found</title>
+</head>
+<body><h2>HTTP ERROR 404</h2>
+<p>Problem accessing /agility/api/v3.2project. Reason:
+<pre>    Not Found</pre></p><hr><i><small>Powered by Jetty://</small></i><hr/>
+
+</body>
+</html>
+
+2017/09/14 20:54:17 Unknown Element name is :  html
+2017/09/14 20:54:17 Unknown Element name is :  head
+2017/09/14 20:54:17 Unknown Element name is :  meta
+2017/09/14 20:54:17 Unknown Element name is :  title
+2017/09/14 20:54:17 Unknown Element name is :  body
+2017/09/14 20:54:17 Unknown Element name is :  h2
+2017/09/14 20:54:17 Unknown Element name is :  p
+2017/09/14 20:54:17 Unknown Element name is :  pre
+2017/09/14 20:54:17 Unknown Element name is :  hr
+2017/09/14 20:54:17 Unknown Element name is :  i
+2017/09/14 20:54:17 Unknown Element name is :  small
+2017/09/14 20:54:17 Unknown Element name is :  hr
+2017/09/14 20:54:17 Error in getting projectid:  there are no Projects with this name
+2017/09/14 20:54:17 errProj is:  there are no Projects with this name
+2017/09/14 20:54:17 ERROR! errProj is:  there are no Projects with this name
+2017/09/14 20:58:07 the Project name is:  LoadProductName
+2017/09/14 20:58:07 projectName is:  LoadProductName
+2017/09/14 20:58:07 URL:> https://207.240.123.229/agility/api/v3.2project
+2017/09/14 20:58:08 response Status: 404 Not Found
+2017/09/14 20:58:08 response Headers: map[Date:[Thu, 14 Sep 2017 15:18:10 GMT] Set-Cookie:[JSESSIONID=6kgciods9ky31xeklz6gawnos;Path=/;Secure JSESSIONID=6kgciods9ky31xeklz6gawnos;Path=/agility;Secure] Content-Type:[text/html; charset=ISO-8859-1] Cache-Control:[must-revalidate,no-cache,no-store] Content-Length:[307] Server:[Jetty(9.2.10.v20150310)]]
+2017/09/14 20:58:08 response Body: <html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Error 404 Not Found</title>
+</head>
+<body><h2>HTTP ERROR 404</h2>
+<p>Problem accessing /agility/api/v3.2project. Reason:
+<pre>    Not Found</pre></p><hr><i><small>Powered by Jetty://</small></i><hr/>
+
+</body>
+</html>
+
+2017/09/14 20:58:08 Unknown Element name is :  html
+2017/09/14 20:58:08 Unknown Element name is :  head
+2017/09/14 20:58:08 Unknown Element name is :  meta
+2017/09/14 20:58:08 Unknown Element name is :  title
+2017/09/14 20:58:08 Unknown Element name is :  body
+2017/09/14 20:58:08 Unknown Element name is :  h2
+2017/09/14 20:58:08 Unknown Element name is :  p
+2017/09/14 20:58:08 Unknown Element name is :  pre
+2017/09/14 20:58:08 Unknown Element name is :  hr
+2017/09/14 20:58:08 Unknown Element name is :  i
+2017/09/14 20:58:08 Unknown Element name is :  small
+2017/09/14 20:58:08 Unknown Element name is :  hr
+2017/09/14 20:58:08 Error in getting projectid:  there are no Projects with this name
+2017/09/14 20:58:08 errProj is:  there are no Projects with this name
+2017/09/14 20:58:08 ERROR! errProj is:  there are no Projects with this name
+2017/09/14 20:58:34 the Project name is:  LoadProductName
+2017/09/14 20:58:34 projectName is:  LoadProductName
+2017/09/14 20:58:34 URL:> https://207.240.123.229/agility/api/v3.2project
+2017/09/14 20:58:37 response Status: 404 Not Found
+2017/09/14 20:58:37 response Headers: map[Cache-Control:[must-revalidate,no-cache,no-store] Content-Length:[307] Server:[Jetty(9.2.10.v20150310)] Date:[Thu, 14 Sep 2017 15:18:39 GMT] Set-Cookie:[JSESSIONID=1vas2mnpymptn9zq2nile1oyg;Path=/;Secure JSESSIONID=1vas2mnpymptn9zq2nile1oyg;Path=/agility;Secure] Content-Type:[text/html; charset=ISO-8859-1]]
+2017/09/14 20:58:37 response Body: <html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Error 404 Not Found</title>
+</head>
+<body><h2>HTTP ERROR 404</h2>
+<p>Problem accessing /agility/api/v3.2project. Reason:
+<pre>    Not Found</pre></p><hr><i><small>Powered by Jetty://</small></i><hr/>
+
+</body>
+</html>
+
+2017/09/14 20:58:37 Unknown Element name is :  html
+2017/09/14 20:58:37 Unknown Element name is :  head
+2017/09/14 20:58:37 Unknown Element name is :  meta
+2017/09/14 20:58:37 Unknown Element name is :  title
+2017/09/14 20:58:37 Unknown Element name is :  body
+2017/09/14 20:58:37 Unknown Element name is :  h2
+2017/09/14 20:58:37 Unknown Element name is :  p
+2017/09/14 20:58:37 Unknown Element name is :  pre
+2017/09/14 20:58:37 Unknown Element name is :  hr
+2017/09/14 20:58:37 Unknown Element name is :  i
+2017/09/14 20:58:37 Unknown Element name is :  small
+2017/09/14 20:58:37 Unknown Element name is :  hr
+2017/09/14 20:58:37 Error in getting projectid:  there are no Projects with this name
+2017/09/14 20:58:37 errProj is:  there are no Projects with this name
+2017/09/14 20:58:37 ERROR! errProj is:  there are no Projects with this name
+2017/09/14 21:00:43 the Project name is:  LoadProductName
+2017/09/14 21:00:43 projectName is:  LoadProductName
+2017/09/14 21:00:43 URL:> https://207.240.123.229/agility/api/v3.2/project
+2017/09/14 21:00:45 response Status: 200 OK
+2017/09/14 21:00:45 response Headers: map[Content-Length:[4450] Server:[Jetty(9.2.10.v20150310)] Date:[Thu, 14 Sep 2017 15:20:46 GMT] Expires:[Thu, 01 Jan 1970 00:00:00 GMT] Set-Cookie:[JSESSIONID=15jazenbc2r8yiyd2a6mp0ulv; Path=/agility; Secure] Content-Type:[application/xml]]
+2017/09/14 21:00:45 response Body: <?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns1:Linklist xmlns:ns1="http://servicemesh.com/agility/api"><ns1:link><ns1:name>Agility Factory</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/2</ns1:href><ns1:id>2</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>Store Items Factory</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/98</ns1:href><ns1:id>98</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>Agility Platform</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/3</ns1:href><ns1:id>3</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>StackWindows</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/196</ns1:href><ns1:id>196</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>SQL Server</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/294</ns1:href><ns1:id>294</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>CSC Agility Store Demo</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/104</ns1:href><ns1:id>104</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>TestOracle</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/265</ns1:href><ns1:id>265</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>Arcadis </ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/625</ns1:href><ns1:id>625</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>Check</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/690</ns1:href><ns1:id>690</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>StackImportSOE</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/116</ns1:href><ns1:id>116</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>Test1</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/694</ns1:href><ns1:id>694</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>LoadProductName</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/119</ns1:href><ns1:id>119</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>Test</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/599</ns1:href><ns1:id>599</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>JBOSS</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/216</ns1:href><ns1:id>216</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>IIS</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/156</ns1:href><ns1:id>156</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>shubha</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/796</ns1:href><ns1:id>796</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link></ns1:Linklist>
+2017/09/14 21:00:45 Element name is :  Linklist
+2017/09/14 21:00:45 Element name is :  link
+2017/09/14 21:00:45 Element value is : Agility Factory
+2017/09/14 21:00:45 Unknown Element name is :  link
+2017/09/14 21:00:45 Element name is :  link
+2017/09/14 21:00:45 Element value is : Store Items Factory
+2017/09/14 21:00:45 Unknown Element name is :  link
+2017/09/14 21:00:45 Element name is :  link
+2017/09/14 21:00:45 Element value is : Agility Platform
+2017/09/14 21:00:45 Unknown Element name is :  link
+2017/09/14 21:00:45 Element name is :  link
+2017/09/14 21:00:45 Element value is : StackWindows
+2017/09/14 21:00:45 Unknown Element name is :  link
+2017/09/14 21:00:45 Element name is :  link
+2017/09/14 21:00:45 Element value is : SQL Server
+2017/09/14 21:00:45 Unknown Element name is :  link
+2017/09/14 21:00:45 Element name is :  link
+2017/09/14 21:00:45 Element value is : CSC Agility Store Demo
+2017/09/14 21:00:45 Unknown Element name is :  link
+2017/09/14 21:00:45 Element name is :  link
+2017/09/14 21:00:45 Element value is : TestOracle
+2017/09/14 21:00:45 Unknown Element name is :  link
+2017/09/14 21:00:45 Element name is :  link
+2017/09/14 21:00:45 Element value is : Arcadis 
+2017/09/14 21:00:45 Unknown Element name is :  link
+2017/09/14 21:00:45 Element name is :  link
+2017/09/14 21:00:45 Element value is : Check
+2017/09/14 21:00:45 Unknown Element name is :  link
+2017/09/14 21:00:45 Element name is :  link
+2017/09/14 21:00:45 Element value is : StackImportSOE
+2017/09/14 21:00:45 Unknown Element name is :  link
+2017/09/14 21:00:45 Element name is :  link
+2017/09/14 21:00:45 Element value is : Test1
+2017/09/14 21:00:45 Unknown Element name is :  link
+2017/09/14 21:00:45 Element name is :  link
+2017/09/14 21:00:45 Element value is : LoadProductName
+2017/09/14 21:00:45 Found the Project :  LoadProductName
+2017/09/14 21:00:45 the projectid is:  119
+2017/09/14 21:00:45 errProj is:  <nil>
+2017/09/14 21:00:45 projectid is:  119
+2017/09/15 14:44:08 the Project name is:  LoadProductName
+2017/09/15 14:44:08 projectName is:  LoadProductName
+2017/09/15 14:44:08 URL:> https://207.240.123.229/agility/api/v3.2/project
+2017/09/15 14:44:10 response Status: 200 OK
+2017/09/15 14:44:10 response Headers: map[Date:[Fri, 15 Sep 2017 09:04:08 GMT] Expires:[Thu, 01 Jan 1970 00:00:00 GMT] Set-Cookie:[JSESSIONID=5vqfs6tpm3g2shxbm25fwabv; Path=/agility; Secure] Content-Type:[application/xml] Content-Length:[4450] Server:[Jetty(9.2.10.v20150310)]]
+2017/09/15 14:44:10 response Body: <?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns1:Linklist xmlns:ns1="http://servicemesh.com/agility/api"><ns1:link><ns1:name>Agility Factory</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/2</ns1:href><ns1:id>2</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>Store Items Factory</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/98</ns1:href><ns1:id>98</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>Agility Platform</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/3</ns1:href><ns1:id>3</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>StackWindows</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/196</ns1:href><ns1:id>196</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>SQL Server</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/294</ns1:href><ns1:id>294</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>CSC Agility Store Demo</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/104</ns1:href><ns1:id>104</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>TestOracle</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/265</ns1:href><ns1:id>265</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>Arcadis </ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/625</ns1:href><ns1:id>625</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>Check</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/690</ns1:href><ns1:id>690</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>StackImportSOE</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/116</ns1:href><ns1:id>116</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>Test1</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/694</ns1:href><ns1:id>694</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>LoadProductName</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/119</ns1:href><ns1:id>119</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>Test</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/599</ns1:href><ns1:id>599</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>JBOSS</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/216</ns1:href><ns1:id>216</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>IIS</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/156</ns1:href><ns1:id>156</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>shubha</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/796</ns1:href><ns1:id>796</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link></ns1:Linklist>
+2017/09/15 14:44:10 Element name is :  Linklist
+2017/09/15 14:44:10 Element name is :  link
+2017/09/15 14:44:10 Element value is : Agility Factory
+2017/09/15 14:44:10 Unknown Element name is :  link
+2017/09/15 14:44:10 Element name is :  link
+2017/09/15 14:44:10 Element value is : Store Items Factory
+2017/09/15 14:44:10 Unknown Element name is :  link
+2017/09/15 14:44:10 Element name is :  link
+2017/09/15 14:44:10 Element value is : Agility Platform
+2017/09/15 14:44:10 Unknown Element name is :  link
+2017/09/15 14:44:10 Element name is :  link
+2017/09/15 14:44:10 Element value is : StackWindows
+2017/09/15 14:44:10 Unknown Element name is :  link
+2017/09/15 14:44:10 Element name is :  link
+2017/09/15 14:44:10 Element value is : SQL Server
+2017/09/15 14:44:10 Unknown Element name is :  link
+2017/09/15 14:44:10 Element name is :  link
+2017/09/15 14:44:10 Element value is : CSC Agility Store Demo
+2017/09/15 14:44:10 Unknown Element name is :  link
+2017/09/15 14:44:10 Element name is :  link
+2017/09/15 14:44:10 Element value is : TestOracle
+2017/09/15 14:44:10 Unknown Element name is :  link
+2017/09/15 14:44:10 Element name is :  link
+2017/09/15 14:44:10 Element value is : Arcadis 
+2017/09/15 14:44:10 Unknown Element name is :  link
+2017/09/15 14:44:10 Element name is :  link
+2017/09/15 14:44:10 Element value is : Check
+2017/09/15 14:44:10 Unknown Element name is :  link
+2017/09/15 14:44:10 Element name is :  link
+2017/09/15 14:44:10 Element value is : StackImportSOE
+2017/09/15 14:44:10 Unknown Element name is :  link
+2017/09/15 14:44:10 Element name is :  link
+2017/09/15 14:44:10 Element value is : Test1
+2017/09/15 14:44:10 Unknown Element name is :  link
+2017/09/15 14:44:10 Element name is :  link
+2017/09/15 14:44:10 Element value is : LoadProductName
+2017/09/15 14:44:10 Found the Project :  LoadProductName
+2017/09/15 14:44:10 the projectid is:  119
+2017/09/15 14:44:10 errProj is:  <nil>
+2017/09/15 14:44:10 projectid is:  119
+2017/09/15 16:23:49 the Project name is:  LoadProductName
+2017/09/15 16:23:49 projectName is:  LoadProductName
+2017/09/15 16:23:49 URL:> https://207.240.123.229/agility/api/v3.2/project
+2017/09/15 16:23:50 response Status: 200 OK
+2017/09/15 16:23:50 response Headers: map[Date:[Fri, 15 Sep 2017 10:43:49 GMT] Expires:[Thu, 01 Jan 1970 00:00:00 GMT] Set-Cookie:[JSESSIONID=1exulrq7mivlwinx3f9fufgnf; Path=/agility; Secure] Content-Type:[application/xml] Content-Length:[4450] Server:[Jetty(9.2.10.v20150310)]]
+2017/09/15 16:23:50 response Body: <?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns1:Linklist xmlns:ns1="http://servicemesh.com/agility/api"><ns1:link><ns1:name>Agility Factory</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/2</ns1:href><ns1:id>2</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>Store Items Factory</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/98</ns1:href><ns1:id>98</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>Agility Platform</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/3</ns1:href><ns1:id>3</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>StackWindows</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/196</ns1:href><ns1:id>196</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>SQL Server</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/294</ns1:href><ns1:id>294</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>CSC Agility Store Demo</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/104</ns1:href><ns1:id>104</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>TestOracle</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/265</ns1:href><ns1:id>265</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>Arcadis </ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/625</ns1:href><ns1:id>625</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>Check</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/690</ns1:href><ns1:id>690</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>StackImportSOE</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/116</ns1:href><ns1:id>116</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>Test1</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/694</ns1:href><ns1:id>694</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>LoadProductName</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/119</ns1:href><ns1:id>119</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>Test</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/599</ns1:href><ns1:id>599</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>JBOSS</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/216</ns1:href><ns1:id>216</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>IIS</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/156</ns1:href><ns1:id>156</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link><ns1:link><ns1:name>shubha</ns1:name><ns1:href>https://207.240.123.229/agility/api/v3.2/project/796</ns1:href><ns1:id>796</ns1:id><ns1:rel>self</ns1:rel><ns1:type>application/com.servicemesh.agility.api.Project+xml</ns1:type><ns1:position>0</ns1:position></ns1:link></ns1:Linklist>
+2017/09/15 16:23:50 Element name is :  Linklist
+2017/09/15 16:23:50 Element name is :  link
+2017/09/15 16:23:50 Element value is : Agility Factory
+2017/09/15 16:23:50 Unknown Element name is :  link
+2017/09/15 16:23:50 Element name is :  link
+2017/09/15 16:23:50 Element value is : Store Items Factory
+2017/09/15 16:23:50 Unknown Element name is :  link
+2017/09/15 16:23:50 Element name is :  link
+2017/09/15 16:23:50 Element value is : Agility Platform
+2017/09/15 16:23:50 Unknown Element name is :  link
+2017/09/15 16:23:50 Element name is :  link
+2017/09/15 16:23:50 Element value is : StackWindows
+2017/09/15 16:23:50 Unknown Element name is :  link
+2017/09/15 16:23:50 Element name is :  link
+2017/09/15 16:23:50 Element value is : SQL Server
+2017/09/15 16:23:50 Unknown Element name is :  link
+2017/09/15 16:23:50 Element name is :  link
+2017/09/15 16:23:50 Element value is : CSC Agility Store Demo
+2017/09/15 16:23:50 Unknown Element name is :  link
+2017/09/15 16:23:50 Element name is :  link
+2017/09/15 16:23:50 Element value is : TestOracle
+2017/09/15 16:23:50 Unknown Element name is :  link
+2017/09/15 16:23:50 Element name is :  link
+2017/09/15 16:23:50 Element value is : Arcadis 
+2017/09/15 16:23:50 Unknown Element name is :  link
+2017/09/15 16:23:50 Element name is :  link
+2017/09/15 16:23:50 Element value is : Check
+2017/09/15 16:23:50 Unknown Element name is :  link
+2017/09/15 16:23:50 Element name is :  link
+2017/09/15 16:23:50 Element value is : StackImportSOE
+2017/09/15 16:23:50 Unknown Element name is :  link
+2017/09/15 16:23:50 Element name is :  link
+2017/09/15 16:23:50 Element value is : Test1
+2017/09/15 16:23:50 Unknown Element name is :  link
+2017/09/15 16:23:50 Element name is :  link
+2017/09/15 16:23:50 Element value is : LoadProductName
+2017/09/15 16:23:50 Found the Project :  LoadProductName
+2017/09/15 16:23:50 the projectid is:  119
+2017/09/15 16:23:50 errProj is:  <nil>
+2017/09/15 16:23:50 projectid is:  119
+2017/09/20 11:54:50 URL:> https://207.240.123.229/agility/api/license
+2017/09/20 11:54:51 response Status: 401 Unauthorized
+2017/09/20 11:54:51 response Headers: map[Server:[Jetty(9.2.10.v20150310)] Date:[Wed, 20 Sep 2017 06:14:29 GMT] Www-Authenticate:[Basic] Content-Type:[text/html; charset=ISO-8859-1] Cache-Control:[must-revalidate,no-cache,no-store] Content-Length:[309]]
+2017/09/20 11:54:51 response Body: <html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Error 401 Unauthorized</title>
+</head>
+<body><h2>HTTP ERROR 401</h2>
+<p>Problem accessing /agility/api/license. Reason:
+<pre>    Unauthorized</pre></p><hr><i><small>Powered by Jetty://</small></i><hr/>
+
+</body>
+</html>
+
+2017/09/20 11:54:51 Deploy response is :  &{<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Error 401 Unauthorized</title>
+</head>
+<body><h2>HTTP ERROR 401</h2>
+<p>Problem accessing /agility/api/license. Reason:
+<pre>    Unauthorized</pre></p><hr><i><small>Powered by Jetty://</small></i><hr/>
+
+</body>
+</html>
+ 0 -1}
+2017/09/20 12:00:06 URL:> https://207.240.123.229/agility/api/license
+2017/09/20 12:00:08 response Status: 401 Unauthorized
+2017/09/20 12:00:08 response Headers: map[Www-Authenticate:[Basic] Content-Type:[text/html; charset=ISO-8859-1] Cache-Control:[must-revalidate,no-cache,no-store] Content-Length:[309] Server:[Jetty(9.2.10.v20150310)] Date:[Wed, 20 Sep 2017 06:19:47 GMT]]
+2017/09/20 12:00:08 response Body: <html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Error 401 Unauthorized</title>
+</head>
+<body><h2>HTTP ERROR 401</h2>
+<p>Problem accessing /agility/api/license. Reason:
+<pre>    Unauthorized</pre></p><hr><i><small>Powered by Jetty://</small></i><hr/>
+
+</body>
+</html>
+
+2017/09/20 12:00:08 Deploy response is :  &{<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Error 401 Unauthorized</title>
+</head>
+<body><h2>HTTP ERROR 401</h2>
+<p>Problem accessing /agility/api/license. Reason:
+<pre>    Unauthorized</pre></p><hr><i><small>Powered by Jetty://</small></i><hr/>
+
+</body>
+</html>
+ 0 -1}
+2017/09/20 12:10:46 URL:> https://207.240.123.229/agility/api/license
+2017/09/20 12:10:49 response Status: 401 Unauthorized
+2017/09/20 12:10:49 response Headers: map[Content-Length:[309] Server:[Jetty(9.2.10.v20150310)] Date:[Wed, 20 Sep 2017 06:30:27 GMT] Www-Authenticate:[Basic] Content-Type:[text/html; charset=ISO-8859-1] Cache-Control:[must-revalidate,no-cache,no-store]]
+2017/09/20 12:10:49 response Body: <html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Error 401 Unauthorized</title>
+</head>
+<body><h2>HTTP ERROR 401</h2>
+<p>Problem accessing /agility/api/license. Reason:
+<pre>    Unauthorized</pre></p><hr><i><small>Powered by Jetty://</small></i><hr/>
+
+</body>
+</html>
+
+2017/09/20 12:10:49 Deploy response is :  &{<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Error 401 Unauthorized</title>
+</head>
+<body><h2>HTTP ERROR 401</h2>
+<p>Problem accessing /agility/api/license. Reason:
+<pre>    Unauthorized</pre></p><hr><i><small>Powered by Jetty://</small></i><hr/>
+
+</body>
+</html>
+ 0 -1}
+2017/09/20 12:15:05 URL:> https://207.240.123.229/agility/api/license
+2017/09/20 12:15:07 response Status: 401 Unauthorized
+2017/09/20 12:15:07 response Headers: map[Cache-Control:[must-revalidate,no-cache,no-store] Content-Length:[309] Server:[Jetty(9.2.10.v20150310)] Date:[Wed, 20 Sep 2017 06:34:45 GMT] Www-Authenticate:[Basic] Content-Type:[text/html; charset=ISO-8859-1]]
+2017/09/20 12:15:07 response Body: <html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Error 401 Unauthorized</title>
+</head>
+<body><h2>HTTP ERROR 401</h2>
+<p>Problem accessing /agility/api/license. Reason:
+<pre>    Unauthorized</pre></p><hr><i><small>Powered by Jetty://</small></i><hr/>
+
+</body>
+</html>
+
+2017/09/20 12:15:07 Deploy response is :  &{<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>Error 401 Unauthorized</title>
+</head>
+<body><h2>HTTP ERROR 401</h2>
+<p>Problem accessing /agility/api/license. Reason:
+<pre>    Unauthorized</pre></p><hr><i><small>Powered by Jetty://</small></i><hr/>
+
+</body>
+</html>
+ 0 -1}
