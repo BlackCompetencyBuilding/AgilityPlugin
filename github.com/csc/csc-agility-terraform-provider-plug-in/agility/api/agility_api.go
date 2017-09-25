@@ -1048,3 +1048,507 @@ func LicenseUpload (username string, password string)([]byte, error){
     log.Println("response Body:", string(body))
     return body, nil
 }
+func GetContainerId(containerName string, username string, password string) (string, error){
+	log.Println("containerName is: ", containerName)
+	var url bytes.Buffer
+	q := new(Result)
+
+	// Create the URL for the call to the Agility API
+	url.WriteString(configuration.APIURL)
+	url.WriteString("container")
+	log.Println("URL:>", url.String())
+
+	// Set the right HTTP Verb, and setup HTTP Basic Security
+	req, err := http.NewRequest("GET", url.String(), nil)
+	req.SetBasicAuth(username, password)
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+
+	// make the HTTPS request
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	// log the response details for debugging
+	log.Println("response Status:", resp.Status)
+	log.Println("response Headers:", resp.Header)
+
+	//Stream the response body into a byte array
+	body, _ := ioutil.ReadAll(resp.Body)
+	log.Println("response Body:", string(body))
+
+	//Parse the XML
+	r := strings.NewReader(string(body))
+	decoder := xml.NewDecoder(r)
+	finish := false
+	for {
+		// Read tokens from the XML document in a stream.
+		t, _ := decoder.Token()
+		if t == nil {
+			return "", errors.New("there are no Containers with this name")
+		}
+		if finish {
+			break
+		}
+		// look for <link> element
+		switch Element := t.(type) {
+		case xml.StartElement:
+			if Element.Name.Local == "link" {
+				log.Println("Element name is : ", Element.Name.Local)
+
+				// unmarshal the element into generic structure
+				err := decoder.DecodeElement(&q, &Element)
+				if err != nil {
+					log.Println(err)
+				}
+
+				// if the container name matches the container defined to Terraform
+				// then we are are the right place, so stop looking
+				log.Println("Element value is :", string(q.Name))
+				if string(q.Name) == containerName {
+					log.Println("Found the Container : ", q.Name)
+					finish = true
+					break
+				}
+			}
+			// if the element is the <Linklist> then go again
+			if Element.Name.Local == "Linklist" {
+				log.Println("Element name is : ", Element.Name.Local)
+			} else {
+				log.Println("Unknown Element name is : ", Element.Name.Local)
+			}
+		default:
+		}
+
+	}
+
+	// return the ID for the container
+	return string(q.Id), nil
+}
+
+func CreateSubContainer(ResourceData *schema.ResourceData, containerId string, username string, password string) ([]byte, error){
+	f, errf := os.OpenFile("./agility/api/agility.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+	if errf != nil {
+		log.Println("error opening file: ", errf)
+	}
+	defer f.Close()
+
+	log.SetOutput(f)
+
+	var url bytes.Buffer
+	// Create the URL for the call to the Agility API
+	url.WriteString(configuration.APIURL)
+	url.WriteString("container/")
+	url.WriteString(containerId)
+	url.WriteString("/container")
+	log.Println("URL:>", url.String())
+
+	var payload bytes.Buffer
+	//Create the payload for the request body
+	s := ResourceData.Get("container").(string)
+	t := ResourceData.Get("description").(string)
+	payload.WriteString(`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns1:Container xmlns:ns1="http://servicemesh.com/agility/api"><ns1:name>`)
+	payload.WriteString(s)
+	payload.WriteString(`</ns1:name><ns1:description>`)
+	payload.WriteString(t)
+	payload.WriteString(`</ns1:description></ns1:Container>`)
+	payload1 := payload.String()
+	log.Println("Payload=====>",payload1)
+	payload2 := []byte(payload1)
+	// Set the right HTTP Verb, and setup HTTP Basic Security
+	req, err := http.NewRequest("POST", url.String(), bytes.NewBuffer([]byte(payload2)))
+	req.Header.Set("Content-Type", "application/xml; charset=utf-8")
+	req.SetBasicAuth(username,password)
+
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+
+	// make the HTTPS request
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	// log the response details for debugging
+	log.Println("response Status:", resp.Status)
+	log.Println("response Headers:", resp.Header)
+
+	//Stream the response body into a byte array and return it
+	body, _ := ioutil.ReadAll(resp.Body)
+	log.Println("response Body:", string(body))
+	return body,nil
+}
+
+func CreateSubProject(ResourceData *schema.ResourceData, containerId string, username string, password string) ([]byte, error){
+	f, errf := os.OpenFile("./agility/api/agility.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+	if errf != nil {
+		log.Println("error opening file: ", errf)
+	}
+	defer f.Close()
+
+	log.SetOutput(f)
+
+	var url bytes.Buffer
+	// Create the URL for the call to the Agility API
+	url.WriteString(configuration.APIURL)
+	url.WriteString("container/")
+	url.WriteString(containerId)
+	url.WriteString("/project")
+	log.Println("URL:>", url.String())
+
+	var payload bytes.Buffer
+	//Create the payload for the request body
+	s := ResourceData.Get("project").(string)
+	t := ResourceData.Get("description").(string)
+	payload.WriteString(`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns1:Project xmlns:ns1="http://servicemesh.com/agility/api"><ns1:name>`)
+	payload.WriteString(s)
+	payload.WriteString(`</ns1:name><ns1:description>`)
+	payload.WriteString(t)
+	payload.WriteString(`</ns1:description></ns1:Project>`)
+	payload1 := payload.String()
+	log.Println("Payload=====>",payload1)
+	payload2 := []byte(payload1)
+	// Set the right HTTP Verb, and setup HTTP Basic Security
+	req, err := http.NewRequest("POST", url.String(), bytes.NewBuffer([]byte(payload2)))
+	req.Header.Set("Content-Type", "application/xml; charset=utf-8")
+	req.SetBasicAuth(username,password)
+
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+
+	// make the HTTPS request
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	// log the response details for debugging
+	log.Println("response Status:", resp.Status)
+	log.Println("response Headers:", resp.Header)
+
+	//Stream the response body into a byte array and return it
+	body, _ := ioutil.ReadAll(resp.Body)
+	log.Println("response Body:", string(body))
+	return body,nil
+}
+
+func CreateEnvironments(ResourceData *schema.ResourceData, projectId string, username string, password string) ([]byte, error){
+	f, errf := os.OpenFile("./agility/api/agility.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+	if errf != nil {
+		log.Println("error opening file: ", errf)
+	}
+	defer f.Close()
+
+	log.SetOutput(f)
+
+	var url bytes.Buffer
+	// Create the URL for the call to the Agility API
+	url.WriteString(configuration.APIURL)
+	url.WriteString("project/")
+	url.WriteString(projectId)
+	url.WriteString("/environment")
+	log.Println("URL:>", url.String())
+
+	var payload bytes.Buffer
+	//Create the payload for the request body
+	s := ResourceData.Get("environment").(string)
+	t := ResourceData.Get("description").(string)
+	u := ResourceData.Get("environmenttype").(string)
+	payload.WriteString(`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns1:Environment xmlns:ns1="http://servicemesh.com/agility/api"><ns1:name>`)
+	payload.WriteString(s)
+	payload.WriteString(`</ns1:name><ns1:type><ns1:name>`)
+	payload.WriteString(u)
+	payload.WriteString(`</ns1:name></ns1:type><ns1:description>`)
+	payload.WriteString(t)
+	payload.WriteString(`</ns1:description></ns1:Environment>`)
+	payload1 := payload.String()
+	log.Println("Payload=====>",payload1)
+	payload2 := []byte(payload1)
+	// Set the right HTTP Verb, and setup HTTP Basic Security
+	req, err := http.NewRequest("POST", url.String(), bytes.NewBuffer([]byte(payload2)))
+	req.Header.Set("Content-Type", "application/xml; charset=utf-8")
+	req.SetBasicAuth(username,password)
+
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+
+	// make the HTTPS request
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	// log the response details for debugging
+	log.Println("response Status:", resp.Status)
+	log.Println("response Headers:", resp.Header)
+
+	//Stream the response body into a byte array and return it
+	body, _ := ioutil.ReadAll(resp.Body)
+	log.Println("response Body:", string(body))
+	return body,nil
+}
+func GetContainerId(containerName string, username string, password string) (string, error){
+	log.Println("containerName is: ", containerName)
+	var url bytes.Buffer
+	q := new(Result)
+
+	// Create the URL for the call to the Agility API
+	url.WriteString(configuration.APIURL)
+	url.WriteString("container")
+	log.Println("URL:>", url.String())
+
+	// Set the right HTTP Verb, and setup HTTP Basic Security
+	req, err := http.NewRequest("GET", url.String(), nil)
+	req.SetBasicAuth(username, password)
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+
+	// make the HTTPS request
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	// log the response details for debugging
+	log.Println("response Status:", resp.Status)
+	log.Println("response Headers:", resp.Header)
+
+	//Stream the response body into a byte array
+	body, _ := ioutil.ReadAll(resp.Body)
+	log.Println("response Body:", string(body))
+
+	//Parse the XML
+	r := strings.NewReader(string(body))
+	decoder := xml.NewDecoder(r)
+	finish := false
+	for {
+		// Read tokens from the XML document in a stream.
+		t, _ := decoder.Token()
+		if t == nil {
+			return "", errors.New("there are no Containers with this name")
+		}
+		if finish {
+			break
+		}
+		// look for <link> element
+		switch Element := t.(type) {
+		case xml.StartElement:
+			if Element.Name.Local == "link" {
+				log.Println("Element name is : ", Element.Name.Local)
+
+				// unmarshal the element into generic structure
+				err := decoder.DecodeElement(&q, &Element)
+				if err != nil {
+					log.Println(err)
+				}
+
+				// if the container name matches the container defined to Terraform
+				// then we are are the right place, so stop looking
+				log.Println("Element value is :", string(q.Name))
+				if string(q.Name) == containerName {
+					log.Println("Found the Container : ", q.Name)
+					finish = true
+					break
+				}
+			}
+			// if the element is the <Linklist> then go again
+			if Element.Name.Local == "Linklist" {
+				log.Println("Element name is : ", Element.Name.Local)
+			} else {
+				log.Println("Unknown Element name is : ", Element.Name.Local)
+			}
+		default:
+		}
+
+	}
+
+	// return the ID for the container
+	return string(q.Id), nil
+}
+
+func CreateSubContainer(ResourceData *schema.ResourceData, containerId string, username string, password string) ([]byte, error){
+	f, errf := os.OpenFile("./agility/api/agility.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+	if errf != nil {
+		log.Println("error opening file: ", errf)
+	}
+	defer f.Close()
+
+	log.SetOutput(f)
+
+	var url bytes.Buffer
+	// Create the URL for the call to the Agility API
+	url.WriteString(configuration.APIURL)
+	url.WriteString("container/")
+	url.WriteString(containerId)
+	url.WriteString("/container")
+	log.Println("URL:>", url.String())
+
+	var payload bytes.Buffer
+	//Create the payload for the request body
+	s := ResourceData.Get("container").(string)
+	t := ResourceData.Get("description").(string)
+	payload.WriteString(`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns1:Container xmlns:ns1="http://servicemesh.com/agility/api"><ns1:name>`)
+	payload.WriteString(s)
+	payload.WriteString(`</ns1:name><ns1:description>`)
+	payload.WriteString(t)
+	payload.WriteString(`</ns1:description></ns1:Container>`)
+	payload1 := payload.String()
+	log.Println("Payload=====>",payload1)
+	payload2 := []byte(payload1)
+	// Set the right HTTP Verb, and setup HTTP Basic Security
+	req, err := http.NewRequest("POST", url.String(), bytes.NewBuffer([]byte(payload2)))
+	req.Header.Set("Content-Type", "application/xml; charset=utf-8")
+	req.SetBasicAuth(username,password)
+
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+
+	// make the HTTPS request
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	// log the response details for debugging
+	log.Println("response Status:", resp.Status)
+	log.Println("response Headers:", resp.Header)
+
+	//Stream the response body into a byte array and return it
+	body, _ := ioutil.ReadAll(resp.Body)
+	log.Println("response Body:", string(body))
+	return body,nil
+}
+
+func CreateSubProject(ResourceData *schema.ResourceData, containerId string, username string, password string) ([]byte, error){
+	f, errf := os.OpenFile("./agility/api/agility.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+	if errf != nil {
+		log.Println("error opening file: ", errf)
+	}
+	defer f.Close()
+
+	log.SetOutput(f)
+
+	var url bytes.Buffer
+	// Create the URL for the call to the Agility API
+	url.WriteString(configuration.APIURL)
+	url.WriteString("container/")
+	url.WriteString(containerId)
+	url.WriteString("/project")
+	log.Println("URL:>", url.String())
+
+	var payload bytes.Buffer
+	//Create the payload for the request body
+	s := ResourceData.Get("project").(string)
+	t := ResourceData.Get("description").(string)
+	payload.WriteString(`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns1:Project xmlns:ns1="http://servicemesh.com/agility/api"><ns1:name>`)
+	payload.WriteString(s)
+	payload.WriteString(`</ns1:name><ns1:description>`)
+	payload.WriteString(t)
+	payload.WriteString(`</ns1:description></ns1:Project>`)
+	payload1 := payload.String()
+	log.Println("Payload=====>",payload1)
+	payload2 := []byte(payload1)
+	// Set the right HTTP Verb, and setup HTTP Basic Security
+	req, err := http.NewRequest("POST", url.String(), bytes.NewBuffer([]byte(payload2)))
+	req.Header.Set("Content-Type", "application/xml; charset=utf-8")
+	req.SetBasicAuth(username,password)
+
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+
+	// make the HTTPS request
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	// log the response details for debugging
+	log.Println("response Status:", resp.Status)
+	log.Println("response Headers:", resp.Header)
+
+	//Stream the response body into a byte array and return it
+	body, _ := ioutil.ReadAll(resp.Body)
+	log.Println("response Body:", string(body))
+	return body,nil
+}
+
+func CreateEnvironments(ResourceData *schema.ResourceData, projectId string, username string, password string) ([]byte, error){
+	f, errf := os.OpenFile("./agility/api/agility.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+	if errf != nil {
+		log.Println("error opening file: ", errf)
+	}
+	defer f.Close()
+
+	log.SetOutput(f)
+
+	var url bytes.Buffer
+	// Create the URL for the call to the Agility API
+	url.WriteString(configuration.APIURL)
+	url.WriteString("project/")
+	url.WriteString(projectId)
+	url.WriteString("/environment")
+	log.Println("URL:>", url.String())
+
+	var payload bytes.Buffer
+	//Create the payload for the request body
+	s := ResourceData.Get("environment").(string)
+	t := ResourceData.Get("description").(string)
+	u := ResourceData.Get("environmenttype").(string)
+	payload.WriteString(`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns1:Environment xmlns:ns1="http://servicemesh.com/agility/api"><ns1:name>`)
+	payload.WriteString(s)
+	payload.WriteString(`</ns1:name><ns1:type><ns1:name>`)
+	payload.WriteString(u)
+	payload.WriteString(`</ns1:name></ns1:type><ns1:description>`)
+	payload.WriteString(t)
+	payload.WriteString(`</ns1:description></ns1:Environment>`)
+	payload1 := payload.String()
+	log.Println("Payload=====>",payload1)
+	payload2 := []byte(payload1)
+	// Set the right HTTP Verb, and setup HTTP Basic Security
+	req, err := http.NewRequest("POST", url.String(), bytes.NewBuffer([]byte(payload2)))
+	req.Header.Set("Content-Type", "application/xml; charset=utf-8")
+	req.SetBasicAuth(username,password)
+
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+
+	// make the HTTPS request
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	// log the response details for debugging
+	log.Println("response Status:", resp.Status)
+	log.Println("response Headers:", resp.Header)
+
+	//Stream the response body into a byte array and return it
+	body, _ := ioutil.ReadAll(resp.Body)
+	log.Println("response Body:", string(body))
+	return body,nil
+}
