@@ -28,6 +28,11 @@ func Provider() terraform.ResourceProvider {
 			//"agility_compute":			resourceAgilityCompute(),
 			//"agility_license":  			resourceLicenseUpload(),
 			"agility_destroy" :				resourceDestroy(),
+			"agility_createcontainer":		resourceCreateSubContainer(),
+			"agility_createproject":		resourceCreateSubProject(),
+			"agility_createenvironment":	resourceCreateEnvironments(),
+			"agility_addcloudprovider":		resourceAddCloudProvider(),
+			"agility_synccloudprovider":	resourceSyncCloudProvider(),
 		},
 
 		ConfigureFunc: providerConfigure,
