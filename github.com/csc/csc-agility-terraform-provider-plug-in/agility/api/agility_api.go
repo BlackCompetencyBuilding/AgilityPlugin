@@ -59,7 +59,7 @@ type Config struct {
 }
 
 var configuration Config
-
+var payload string
 func init(){
     file, err1 := os.Open("./agility/api/conf.json")
     if err1 != nil {
@@ -1612,4 +1612,44 @@ func SyncCloudProvider(ResourceData *schema.ResourceData, cloudId string, userna
     body, _ := ioutil.ReadAll(resp.Body)
     log.Println("response Body:", string(body))
     return body,nil
+}
+func LicenseUpload (username string, password string) []byte{
+
+    var url bytes.Buffer
+
+    // url for licence upload
+    url.WriteString(configuration.APIURL)
+    url.WriteString("license")
+    //reading payload from AgilityLicense file
+    file, err1 := ioutil.ReadFile("AgilityLicense.xml")
+    if err1 != nil {
+        log.Println("error:", err1)
+    }
+
+    //Payload code ends
+
+    log.Println("URL:>",url.String())
+    req, err := http.NewRequest("POST", url.String(),bytes.NewBuffer([]byte(file)))
+    //req.Header.Set("Content-Type", "text; charset=utf-8")
+    req.SetBasicAuth(username, password)
+    tr := &http.Transport{
+    TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+    }
+    client := &http.Client{Transport: tr}
+
+    // make the HTTPS request
+    resp, err := client.Do(req)
+    if err != nil {
+    panic(err)
+    }
+    defer resp.Body.Close()
+
+    // log the response details for debugging
+    log.Println("response Status:", resp.Status)
+    log.Println("response Headers:", resp.Header)
+
+    //Stream the response body into a byte array and return it
+    body, _ := ioutil.ReadAll(resp.Body)
+   log.Println("response Body:", resp.Body)
+    return body
 }
