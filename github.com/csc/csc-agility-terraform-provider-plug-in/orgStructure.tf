@@ -15,17 +15,17 @@ provider "agility" {
     project = "StackImportSOE"
 }*/
 resource "agility_createcontainer" "HRContainer" {
-  parentcontainername = "Group1A"
+  parentcontainername = "Terraform"
   container = "HR"
   description = "Container created via terraform"
 }
 resource "agility_createcontainer" "FinanceContainer" {
-  parentcontainername = "Group1A"
+  parentcontainername = "Terraform"
   container = "Finance"
   description = "Container created via terraform"
 }
 resource "agility_createcontainer" "ITContainer" {
-  parentcontainername = "Group1A"
+  parentcontainername = "Terraform"
   container = "IT"
   description = "Container created via terraform"
 }
@@ -236,5 +236,3 @@ resource "agility_createenvironment" "ProductionPython"{
   environmenttype="PROD"
   depends_on = ["agility_createproject.PythonProject"]
 }
-
-
