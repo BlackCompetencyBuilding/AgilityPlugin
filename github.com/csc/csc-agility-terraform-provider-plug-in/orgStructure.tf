@@ -1,11 +1,11 @@
-variable "agility_userid" {}
+/*variable "agility_userid" {}
 variable "agility_password" {}
 provider "agility" {
     userid = "${var.agility_userid}"
     password = "${var.agility_password}"
 }
 # Create a new Linux instance on a small server
-/*resource "agility_compute" "myserver" {
+resource "agility_compute" "myserver" {
     name = "myserver"
     active = "true"
     version = "1"
@@ -15,224 +15,224 @@ provider "agility" {
     project = "StackImportSOE"
 }*/
 resource "agility_createcontainer" "HRContainer" {
-  parentcontainername = "Terraform"
-  container = "HR"
+  parentcontainername = "${var.headcontainername}"
+  container = "${var.parentcontainer1}"
   description = "Container created via terraform"
 }
 resource "agility_createcontainer" "FinanceContainer" {
-  parentcontainername = "Terraform"
-  container = "Finance"
+  parentcontainername = "${var.headcontainername}"
+  container = "${var.parentcontainer2}"
   description = "Container created via terraform"
 }
 resource "agility_createcontainer" "ITContainer" {
-  parentcontainername = "Terraform"
-  container = "IT"
+  parentcontainername = "${var.headcontainername}"
+  container = "${var.parentcontainer3}"
   description = "Container created via terraform"
 }
 resource "agility_createcontainer" "SubHRContainer" {
-  parentcontainername = "HR"
-  container = "SubHR"
+  parentcontainername = "${var.parentcontainer1}"
+  container = "${var.subcontainer1}"
   description = "Container created via terraform"
   depends_on = ["agility_createcontainer.HRContainer"]
 }
 resource "agility_createcontainer" "AdminContainer" {
-  parentcontainername = "IT"
-  container = "Admin"
+  parentcontainername = "${var.parentcontainer2}"
+  container = "${var.subcontainer2}"
   description = "Container created via terraform"
   depends_on = ["agility_createcontainer.ITContainer"]
 }
 resource "agility_createcontainer" "DeveloperContainer" {
-  parentcontainername = "IT"
-  container = "Developer"
+  parentcontainername = "${var.parentcontainer2}"
+  container = "${var.subcontainer3}"
   description = "Container created via terraform"
   depends_on = ["agility_createcontainer.ITContainer"]
 }
 resource "agility_createproject" "HRProject"{
-  parentcontainername="SubHR"
-  project="HR"
+  parentcontainername="${var.subcontainer1}"
+  project="${var.project1}"
   description="Project created via terraform"
   depends_on = ["agility_createcontainer.SubHRContainer"]
 }
 resource "agility_createproject" "FinanceProject"{
-  parentcontainername="Finance"
-  project="Finance"
+  parentcontainername="${var.parentcontainer3}"
+  project="${var.project2}"
   description="Project created via terraform"
   depends_on = ["agility_createcontainer.FinanceContainer"]
 }
 resource "agility_createproject" "WindowsProject"{
-  parentcontainername="Admin"
-  project="Windows"
+  parentcontainername="${var.subcontainer2}"
+  project="${var.project3}"
   description="Project created via terraform"
   depends_on = ["agility_createcontainer.AdminContainer"]
 }
 resource "agility_createproject" "LinuxProject"{
-  parentcontainername="Admin"
-  project="Linux"
+  parentcontainername="${var.subcontainer2}"
+  project="${var.project4}"
   description="Project created via terraform"
   depends_on = ["agility_createcontainer.AdminContainer"]
 }
 resource "agility_createproject" "DotNetProject"{
-  parentcontainername="Developer"
-  project="DotNet"
+  parentcontainername="${var.subcontainer3}"
+  project="${var.project5}"
   description="Project created via terraform"
   depends_on = ["agility_createcontainer.DeveloperContainer"]
 }
 resource "agility_createproject" "JavaProject"{
-  parentcontainername="Developer"
-  project="Java"
+  parentcontainername="${var.subcontainer3}"
+  project="${var.project6}"
   description="Project created via terraform"
   depends_on = ["agility_createcontainer.DeveloperContainer"]
 }
 resource "agility_createproject" "PythonProject"{
-  parentcontainername="Developer"
-  project="Python"
+  parentcontainername="${var.subcontainer3}"
+  project="${var.project7}"
   description="Project created via terraform"
   depends_on = ["agility_createcontainer.DeveloperContainer"]
 }
 resource "agility_createenvironment" "DevelopmentHR"{
-  parentprojectname="HR"
-  environment= "Dev"
+  parentprojectname="${var.project1}"
+  environment= "${var.environment1}"
   description="Environment created via terraform"
-  environmenttype="DEV"
+  environmenttype="${var.environment1_type}"
   depends_on = ["agility_createproject.HRProject"]
 }
 resource "agility_createenvironment" "UATHR"{
-  parentprojectname="HR"
-  environment= "UAT"
+  parentprojectname="${var.project1}"
+  environment= "${var.environment2}"
   description="Environment created via terraform"
-  environmenttype="UAT"
+  environmenttype="${var.environment2_type}"
   depends_on = ["agility_createproject.HRProject"]
 }
 resource "agility_createenvironment" "ProductionHR"{
-  parentprojectname="HR"
-  environment= "Production"
+  parentprojectname="${var.project1}"
+  environment= "${var.environment3}"
   description="Environment created via terraform"
-  environmenttype="PROD"
+  environmenttype="${var.environment3_type}"
   depends_on = ["agility_createproject.HRProject"]
 }
 resource "agility_createenvironment" "DevelopmentFinance"{
-  parentprojectname="Finance"
-  environment= "Dev"
+  parentprojectname="${var.project2}"
+  environment= "${var.environment1}"
   description="Environment created via terraform"
-  environmenttype="DEV"
+  environmenttype="${var.environment1_type}"
   depends_on = ["agility_createproject.FinanceProject"]
 }
 resource "agility_createenvironment" "UATFinance"{
-  parentprojectname="Finance"
-  environment= "UAT"
+  parentprojectname="${var.project2}"
+  environment= "${var.environment2}"
   description="Environment created via terraform"
-  environmenttype="UAT"
+  environmenttype="${var.environment2_type}"
   depends_on = ["agility_createproject.FinanceProject"]
 }
 resource "agility_createenvironment" "ProductionFinance"{
-  parentprojectname="Finance"
-  environment= "Production"
+  parentprojectname="${var.project2}"
+  environment= "${var.environment3}"
   description="Environment created via terraform"
-  environmenttype="PROD"
+  environmenttype="${var.environment3_type}"
   depends_on = ["agility_createproject.FinanceProject"]
 }
 resource "agility_createenvironment" "DevelopmentWindows"{
-  parentprojectname="Windows"
-  environment= "Dev"
+  parentprojectname="${var.project3}"
+  environment= "${var.environment1}"
   description="Environment created via terraform"
-  environmenttype="DEV"
+  environmenttype="${var.environment1_type}"
   depends_on = ["agility_createproject.WindowsProject"]
 }
 resource "agility_createenvironment" "UATWindows"{
-  parentprojectname="Windows"
-  environment= "UAT"
+  parentprojectname="${var.project3}"
+  environment= "${var.environment2}"
   description="Environment created via terraform"
-  environmenttype="UAT"
+  environmenttype="${var.environment2_type}"
   depends_on = ["agility_createproject.WindowsProject"]
 }
 resource "agility_createenvironment" "ProductionWindows"{
-  parentprojectname="Windows"
-  environment= "Production"
+  parentprojectname="${var.project3}"
+  environment= "${var.environment3}"
   description="Environment created via terraform"
-  environmenttype="PROD"
+  environmenttype="${var.environment3_type}"
   depends_on = ["agility_createproject.WindowsProject"]
 }
 resource "agility_createenvironment" "DevelopmentLinux"{
-  parentprojectname="Linux"
-  environment= "Dev"
+  parentprojectname="${var.project4}"
+  environment= "${var.environment1}"
   description="Environment created via terraform"
-  environmenttype="DEV"
+  environmenttype="${var.environment1_type}"
   depends_on = ["agility_createproject.LinuxProject"]
 }
 resource "agility_createenvironment" "UATLinux"{
-  parentprojectname="Linux"
-  environment= "UAT"
+  parentprojectname="${var.project4}"
+  environment= "${var.environment2}"
   description="Environment created via terraform"
-  environmenttype="UAT"
+  environmenttype="${var.environment2_type}"
   depends_on = ["agility_createproject.LinuxProject"]
 }
 resource "agility_createenvironment" "ProductionLinux"{
-  parentprojectname="Linux"
-  environment= "Production"
+  parentprojectname="${var.project4}"
+  environment= "${var.environment3}"
   description="Environment created via terraform"
-  environmenttype="PROD"
+  environmenttype="${var.environment3_type}"
   depends_on = ["agility_createproject.LinuxProject"]
 }
 resource "agility_createenvironment" "DevelopmentDotNet"{
-  parentprojectname="DotNet"
-  environment= "Dev"
+  parentprojectname="${var.project5}"
+  environment= "${var.environment1}"
   description="Environment created via terraform"
-  environmenttype="DEV"
+  environmenttype="${var.environment1_type}"
   depends_on = ["agility_createproject.DotNetProject"]
 }
 resource "agility_createenvironment" "UATDotNet"{
-  parentprojectname="DotNet"
-  environment= "UAT"
+  parentprojectname="${var.project5}"
+  environment= "${var.environment2}"
   description="Environment created via terraform"
-  environmenttype="UAT"
+  environmenttype="${var.environment2_type}"
   depends_on = ["agility_createproject.DotNetProject"]
 }
 resource "agility_createenvironment" "ProductionDotNet"{
-  parentprojectname="DotNet"
-  environment= "Production"
+  parentprojectname="${var.project5}"
+  environment= "${var.environment3}"
   description="Environment created via terraform"
-  environmenttype="PROD"
+  environmenttype="${var.environment3_type}"
   depends_on = ["agility_createproject.DotNetProject"]
 }
 resource "agility_createenvironment" "DevelopmentJava"{
-  parentprojectname="Java"
-  environment= "Dev"
+  parentprojectname="${var.project6}"
+  environment= "${var.environment1}"
   description="Environment created via terraform"
-  environmenttype="DEV"
+  environmenttype="${var.environment1_type}"
   depends_on = ["agility_createproject.JavaProject"]
 }
 resource "agility_createenvironment" "UATJava"{
-  parentprojectname="Java"
-  environment= "UAT"
+  parentprojectname="${var.project6}"
+  environment= "${var.environment2}"
   description="Environment created via terraform"
-  environmenttype="UAT"
+  environmenttype="${var.environment1_type}"
   depends_on = ["agility_createproject.JavaProject"]
 }
 resource "agility_createenvironment" "ProductionJava"{
-  parentprojectname="Java"
-  environment= "Production"
+  parentprojectname="${var.project6}"
+  environment= "${var.environment3}"
   description="Environment created via terraform"
-  environmenttype="PROD"
+  environmenttype="${var.environment3_type}"
   depends_on = ["agility_createproject.JavaProject"]
 }
 resource "agility_createenvironment" "DevelopmentPython"{
-  parentprojectname="Python"
-  environment= "Dev"
+  parentprojectname="${var.project7}"
+  environment= "${var.environment1}"
   description="Environment created via terraform"
-  environmenttype="DEV"
+  environmenttype="${var.environment1_type}"
   depends_on = ["agility_createproject.PythonProject"]
 }
 resource "agility_createenvironment" "UATPython"{
-  parentprojectname="Python"
-  environment= "UAT"
+  parentprojectname="${var.project7}"
+  environment= "${var.environment2}"
   description="Environment created via terraform"
-  environmenttype="UAT"
+  environmenttype="${var.environment2_type}"
   depends_on = ["agility_createproject.PythonProject"]
 }
 resource "agility_createenvironment" "ProductionPython"{
-  parentprojectname="Python"
-  environment= "Production"
+  parentprojectname="${var.project7}"
+  environment= "${var.environment3}"
   description="Environment created via terraform"
-  environmenttype="PROD"
+  environmenttype="${var.environment3_type}"
   depends_on = ["agility_createproject.PythonProject"]
 }
