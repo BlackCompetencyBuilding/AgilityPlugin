@@ -1621,7 +1621,7 @@ func LicenseUpload (username string, password string) []byte{
     url.WriteString(configuration.APIURL)
     url.WriteString("license")
     //reading payload from AgilityLicense file
-    file, err1 := ioutil.ReadFile("AgilityLicense.xml")
+    file, err1 := ioutil.ReadFile("./agiliyt/api/AgilityLicense.xml")
     if err1 != nil {
         log.Println("error:", err1)
     }
