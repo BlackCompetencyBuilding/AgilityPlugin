@@ -1,14 +1,6 @@
 {
-    "AccessKey": "pm",
+    "AccessKey": "piyush",
     "SecretKey": "07June1990@",
     "MaxRetries": "2",
-    "APIURL": "https://207.240.123.229/agility/api/"
+    "APIURL": "https://52.31.77.163:8443/agility/api/"
 }
-// below configuration for license upload !!! please remove to match suitable condition
-//{
- //   "AccessKey": "admin",
-  //  "SecretKey": "M3sh@dmin!",
-  //  "MaxRetries": "2",
-  //  "APIURL": "https://207.240.123.229/agility/api/"
-
-//}
