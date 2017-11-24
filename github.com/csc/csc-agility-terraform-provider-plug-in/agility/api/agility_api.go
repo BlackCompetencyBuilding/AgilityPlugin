@@ -91,7 +91,7 @@ func SimpleBlueprintDeploy(blueprintId string, environmentId string, username st
 
     // Create the URL for the call to the Agility API
     url.WriteString(configuration.APIURL)
-    url.WriteString("blueprint/")
+    url.WriteString("current/blueprint/")
     url.WriteString(blueprintId)
     url.WriteString("/simpledeploy/")
     url.WriteString(environmentId)
@@ -127,7 +127,7 @@ func DeploymentPlanBlueprintDeploy(blueprintId string, environmentId string, dep
     var url bytes.Buffer
     // Create the URL for the call to the Agility API
     url.WriteString(configuration.APIURL)
-    url.WriteString("blueprint/")
+    url.WriteString("current/blueprint/")
     url.WriteString(blueprintId)
     url.WriteString("/deploy/")
     url.WriteString(environmentId)
@@ -164,7 +164,7 @@ func GetBlueprintDetail(blueprintId string, username string, password string) []
     var url bytes.Buffer
     // Create the URL for the call to the Agility API
     url.WriteString(configuration.APIURL)
-    url.WriteString("blueprint/")
+    url.WriteString("current/blueprint/")
     url.WriteString(blueprintId)
     log.Println("URL:>", url.String())
 
@@ -198,7 +198,7 @@ func StartTopology(topologyId string, username string, password string) []byte {
     var url bytes.Buffer
     // Create the URL for the call to the Agility API
     url.WriteString(configuration.APIURL)
-    url.WriteString("topology/")
+    url.WriteString("current/topology/")
     url.WriteString(topologyId)
     url.WriteString("/start")
     log.Println("URL:>", url.String())
@@ -233,7 +233,7 @@ func StopTopology(topologyId string, username string, password string) []byte {
     var url bytes.Buffer
     // Create the URL for the call to the Agility API
     url.WriteString(configuration.APIURL)
-    url.WriteString("topology/")
+    url.WriteString("current/topology/")
     url.WriteString(topologyId)
     url.WriteString("/stop")
     log.Println("URL:>", url.String())
@@ -269,7 +269,7 @@ func DestroyTopology(topologyId string, username string, password string) []byte
     var url bytes.Buffer
     // Create the URL for the call to the Agility API
     url.WriteString(configuration.APIURL)
-    url.WriteString("topology/")
+    url.WriteString("current/topology/")
     url.WriteString(topologyId)
     log.Println("URL:>", url.String())
 
@@ -307,7 +307,7 @@ func GetDeploymentPlans(blueprintId string, environmentId string, username strin
     var url bytes.Buffer
     // Create the URL for the call to the Agility API
     url.WriteString(configuration.APIURL)
-    url.WriteString("blueprint/")
+    url.WriteString("current/blueprint/")
     url.WriteString(blueprintId)
     url.WriteString("/deploymentplan/")
     url.WriteString(environmentId)
@@ -343,7 +343,7 @@ func GetTopologyDetail(topologyId string, username string, password string) []by
     var url bytes.Buffer
     // Create the URL for the call to the Agility API
     url.WriteString(configuration.APIURL)
-    url.WriteString("topology/")
+    url.WriteString("current/topology/")
     url.WriteString(topologyId)
     log.Println("URL:>", url.String())
 
@@ -376,7 +376,7 @@ func UpdateTopology(topologyId string, toplogy string, username string, password
     var url bytes.Buffer
     // Create the URL for the call to the Agility API
     url.WriteString(configuration.APIURL)
-    url.WriteString("topology/")
+    url.WriteString("current/topology/")
     url.WriteString(topologyId)
     log.Println("URL:>", url.String())
 
@@ -411,7 +411,7 @@ func GetTaskStatus(taskId string, username string, password string) []byte {
     var url bytes.Buffer
     // Create the URL for the call to the Agility API
     url.WriteString(configuration.APIURL)
-    url.WriteString("task/")
+    url.WriteString("current/task/")
     url.WriteString(taskId)
     log.Println("URL:>", url.String())
 
@@ -528,7 +528,7 @@ func SearchTemplates(user string, username string, password string) []byte {
     var url bytes.Buffer
     // Create the URL for the call to the Agility API
     url.WriteString(configuration.APIURL)
-    url.WriteString("template/search?qterm.field.creator.name=")
+    url.WriteString("current/template/search?qterm.field.creator.name=")
     url.WriteString(user)
     log.Println("URL:>", url.String())
 
@@ -562,7 +562,7 @@ func GetInstanceDetail(instanceId string, username string, password string) []by
     var url bytes.Buffer
     // Create the URL for the call to the Agility API
     url.WriteString(configuration.APIURL)
-    url.WriteString("compute/")
+    url.WriteString("current/compute/")
     url.WriteString(instanceId)
     log.Println("URL:>", url.String())
 
@@ -595,7 +595,7 @@ func UpdateInstance(instanceId string, instance string, username string, passwor
     var url bytes.Buffer
     // Create the URL for the call to the Agility API
     url.WriteString(configuration.APIURL)
-    url.WriteString("compute/")
+    url.WriteString("current/compute/")
     url.WriteString(instanceId)
     log.Println("URL:>", url.String())
 
@@ -631,7 +631,7 @@ func GetEnvironmentId(environmntName string, projectId string, username string, 
     q := new(Result)
     // Create the URL for the call to the Agility API
     url.WriteString(configuration.APIURL)
-    url.WriteString("project/")
+    url.WriteString("current/project/")
     url.WriteString(projectId)
     url.WriteString("/environment")
     log.Println("URL:>", url.String())
@@ -716,7 +716,7 @@ func GetBlueprintId(blueprintName string, projectId string, username string, pas
 
     // Create the URL for the call to the Agility API
     url.WriteString(configuration.APIURL)
-    url.WriteString("project/")
+    url.WriteString("current/project/")
     url.WriteString(projectId)
     url.WriteString("/blueprint")
     log.Println("URL:>", url.String())
@@ -807,7 +807,7 @@ func GetBlueprintIdForVersion(blueprintName string, projectId string, version st
     // Create the URL for the call to the Agility API
     // this gets all the versions for the blueprint
     url.WriteString(configuration.APIURL)
-    url.WriteString("blueprint/")
+    url.WriteString("current/blueprint/")
     url.WriteString(slotId)
     url.WriteString("/version")
     log.Println("URL:>", url.String())
@@ -914,7 +914,7 @@ func GetBlueprintVersionsSlot(blueprintName string, projectId string, version st
     // Create the URL for the call to the Agility API
     // this gets detail the blueprint ID fetched above
     url.WriteString(configuration.APIURL)
-    url.WriteString("blueprint/")
+    url.WriteString("current/blueprint/")
     url.WriteString(response)
     log.Println("URL:>", url.String())
 
@@ -982,7 +982,7 @@ func GetProject(projectId string, username string, password string) ([]byte, err
     var url bytes.Buffer
     // Create the URL for the call to the Agility API
     url.WriteString(configuration.APIURL)
-    url.WriteString("project/")
+    url.WriteString("current/project/")
     url.WriteString(projectId)
     log.Println("URL:>", url.String())
 
@@ -1019,7 +1019,7 @@ func GetContainerId(containerName string, username string, password string) (str
 
     // Create the URL for the call to the Agility API
     url.WriteString(configuration.APIURL)
-    url.WriteString("container")
+    url.WriteString("current/container")
     log.Println("URL:>", url.String())
 
     // Set the right HTTP Verb, and setup HTTP Basic Security
@@ -1106,7 +1106,7 @@ func CreateSubContainer(ResourceData *schema.ResourceData, containerId string, u
     var url bytes.Buffer
     // Create the URL for the call to the Agility API
     url.WriteString(configuration.APIURL)
-    url.WriteString("container/")
+    url.WriteString("current/container/")
     url.WriteString(containerId)
     url.WriteString("/container")
     log.Println("URL:>", url.String())
@@ -1162,7 +1162,7 @@ func CreateSubProject(ResourceData *schema.ResourceData, containerId string, use
     var url bytes.Buffer
     // Create the URL for the call to the Agility API
     url.WriteString(configuration.APIURL)
-    url.WriteString("container/")
+    url.WriteString("current/container/")
     url.WriteString(containerId)
     url.WriteString("/project")
     log.Println("URL:>", url.String())
@@ -1218,7 +1218,7 @@ func CreateEnvironments(ResourceData *schema.ResourceData, projectId string, use
     var url bytes.Buffer
     // Create the URL for the call to the Agility API
     url.WriteString(configuration.APIURL)
-    url.WriteString("project/")
+    url.WriteString("current/project/")
     url.WriteString(projectId)
     url.WriteString("/environment")
     log.Println("URL:>", url.String())
@@ -1270,7 +1270,7 @@ func DestroySubConatiner(containerId string, username string, password string) [
     var url bytes.Buffer
     // Create the URL for the call to the Agility API
     url.WriteString(configuration.APIURL)
-    url.WriteString("container/")
+    url.WriteString("current/container/")
     url.WriteString(containerId)
     log.Println("URL:>", url.String())
 
@@ -1316,7 +1316,7 @@ func DestroySubProject(ResourceData *schema.ResourceData, containerId string, us
     var url bytes.Buffer
     // Create the URL for the call to the Agility API
     url.WriteString(configuration.APIURL)
-    url.WriteString("container/")
+    url.WriteString("current/container/")
     url.WriteString(containerId)
     url.WriteString("/project")
     log.Println("URL:>", url.String())
@@ -1372,7 +1372,7 @@ func DestroyEnvironments(ResourceData *schema.ResourceData, projectId string, us
     var url bytes.Buffer
     // Create the URL for the call to the Agility API
     url.WriteString(configuration.APIURL)
-    url.WriteString("project/")
+    url.WriteString("current/project/")
     url.WriteString(projectId)
     url.WriteString("/environment")
     log.Println("URL:>", url.String())
@@ -1426,7 +1426,7 @@ func GetCloudId(cloudName string, username string, password string) (string, err
 
     // Create the URL for the call to the Agility API
     url.WriteString(configuration.APIURL)
-    url.WriteString("cloud")
+    url.WriteString("current/cloud")
     log.Println("URL:>", url.String())
 
     // Set the right HTTP Verb, and setup HTTP Basic Security
@@ -1513,7 +1513,7 @@ func AddCloudProvider(ResourceData *schema.ResourceData, username string, passwo
     var url bytes.Buffer
     // Create the URL for the call to the Agility API
     url.WriteString(configuration.APIURL)
-    url.WriteString("cloud/")
+    url.WriteString("current/cloud/")
     log.Println("URL:>", url.String())
 
     var payload bytes.Buffer
@@ -1582,7 +1582,7 @@ func SyncCloudProvider(ResourceData *schema.ResourceData, cloudId string, userna
     var url bytes.Buffer
     // Create the URL for the call to the Agility API
     url.WriteString(configuration.APIURL)
-    url.WriteString("cloud/")
+    url.WriteString("current/cloud/")
     url.WriteString(cloudId)
     url.WriteString("/resync")
     log.Println("URL:>", url.String())
@@ -1613,6 +1613,7 @@ func SyncCloudProvider(ResourceData *schema.ResourceData, cloudId string, userna
     log.Println("response Body:", string(body))
     return body,nil
 }
+
 func LicenseUpload (username string, password string) []byte{
 
     var url bytes.Buffer
