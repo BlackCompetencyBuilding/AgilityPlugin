@@ -1,0 +1,73 @@
+#!/bin/bash
+# COPYRIGHT (C) 2008-2012 SERVICEMESH, INC.  ALL RIGHTS RESERVED.  CONFIDENTIAL
+# AND PROPRIETARY.
+
+# ALL SOFTWARE, INFORMATION AND ANY OTHER RELATED COMMUNICATIONS (COLLECTIVELY,
+# "WORKS") ARE CONFIDENTIAL AND PROPRIETARY INFORMATION THAT ARE THE EXCLUSIVE
+# PROPERTY OF SERVICEMESH.  ALL WORKS ARE PROVIDED UNDER THE APPLICABLE
+# AGREEMENT OR END USER LICENSE AGREEMENT IN EFFECT BETWEEN YOU AND
+# SERVICEMESH.  UNLESS OTHERWISE SPECIFIED IN THE APPLICABLE AGREEMENT, ALL
+# WORKS ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND EITHER EXPRESSED OR
+# IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.  ALL USE, DISCLOSURE
+# AND/OR REPRODUCTION OF WORKS NOT EXPRESSLY AUTHORIZED BY SERVICEMESH IS
+# STRICTLY PROHIBITED.
+PATH=$PATH:/sbin:/usr/sbin
+export PATH
+
+#check to see if the root user is running the script. If yes, unset SUDO
+uid=`id | sed -e 's;^.*uid=;;' -e 's;\([0-9]\)(.*;\1;'`
+if [ "$uid" = "0" ] ; then
+        SUDO=" "
+else
+        SUDO=`which sudo 2>/dev/null`
+        if [ -z "$SUDO" ] ; then
+                echo "ERROR sudo not found!"
+                exit 1
+        fi
+
+fi
+
+$SUDO mkdir -p /opt/announce
+if [ $? -ne 0 ] ; then
+echo "Failed to create /opt/announce directory" 1>&amp;2
+exit 1
+fi
+
+$SUDO rm -f /opt/announce/upannounce.sh
+if [ -e $HOME/upannounce.sh ] ; then
+$SUDO cp $HOME/upannounce.sh /opt/announce
+else
+echo "ERROR: $HOME/upannounce.sh not found"
+exit 1
+fi
+if [ $? -ne 0 ] ; then
+echo "Failed to copy"
+exit 1
+fi
+
+echo "Created /opt/announce/announce.sh"
+
+UNAME=`uname`
+
+if [ $UNAME = "Linux" ] ; then
+$SUDO chkconfig --del upannounce > /dev/null 2>&amp;1
+$SUDO rm -f /etc/init.d/upannounce
+$SUDO cp /opt/announce/upannounce.sh /etc/init.d/upannounce
+$SUDO chmod 755 /etc/init.d/upannounce
+$SUDO chkconfig --add upannounce
+if [ $? -ne 0 ] ; then
+exit 1
+fi
+echo "Successfully registered upannounce service"
+elif [ $UNAME = "SunOS" ] ; then
+$SUDO cp /opt/announce/upannounce.sh /etc/init.d/upannounce
+for level in 2 3 ; do
+$SUDO rm -f /etc/rc$level.d/S90upannounce
+$SUDO rm -f /etc/rc$level.d/K20upannounce
+$SUDO /usr/bin/ln -s /etc/init.d/upannounce /etc/rc$level.d/S90upannounce
+$SUDO /usr/bin/ln -s /etc/init.d/upannounce /etc/rc$level.d/K20upannounce
+done
+$SUDO /usr/bin/chmod 755 /etc/init.d/upannounce
+echo "Successfully registered upannounce service"
+fi
