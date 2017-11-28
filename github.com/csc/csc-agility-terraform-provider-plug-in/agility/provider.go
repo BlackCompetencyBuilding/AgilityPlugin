@@ -32,7 +32,9 @@ func Provider() terraform.ResourceProvider {
 			//"agility_addcloudprovider":		resourceAddCloudProvider(),
 			//"agility_synccloudprovider":	resourceSyncCloudProvider(),
 			//"agility_license":  			resourceLicenseUpload(),
-			"agility_createstack":			resourceCreateStack(),
+			//"agility_createstack":			resourceCreateStack(),
+			"agility_createscript":				resourceCreateScript(),
+			//"agility_attachment":					resourceAttachment(),
 			},
 
 		ConfigureFunc: providerConfigure,
