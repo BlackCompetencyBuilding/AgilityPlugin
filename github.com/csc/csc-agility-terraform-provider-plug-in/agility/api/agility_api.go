@@ -12,6 +12,7 @@ import (
     "strings"
     "errors"
     "github.com/hashicorp/terraform/helper/schema"
+	"os/exec"
 )
 
 type XMLElement struct {
@@ -1801,4 +1802,247 @@ func CreateStack(ResourceData *schema.ResourceData, projectId string, imageId st
 	body, _ := ioutil.ReadAll(resp.Body)
 	log.Println("response Body:", string(body))
 	return body,nil
+}
+
+func CreateScript(ResourceData *schema.ResourceData, projectId string,username string, password string)([]byte, error){
+    f, errf := os.OpenFile("./agility/api/agility.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+    if errf != nil {
+        log.Println("error opening file: ", errf)
+    }
+    defer f.Close()
+
+    log.SetOutput(f)
+
+    var url bytes.Buffer
+    // Create the URL for the call to the Agility API
+    url.WriteString(configuration.APIURL)
+    url.WriteString("current/project/")
+    url.WriteString(projectId)
+    url.WriteString("/script")
+    log.Println("URL:>", url.String())
+
+    //payload
+    var payload bytes.Buffer
+    scriptname := ResourceData.Get("scriptname").(string)
+    desc :=ResourceData.Get("desc").(string)
+    operatingsystem :=ResourceData.Get("operatingsystem").(string)
+    language := ResourceData.Get("language").(string)
+    rebootrequired := ResourceData.Get("rebootrequired").(string)
+	content:=ResourceData.Get("content").(string)
+    var filelocation bytes.Buffer
+    filelocation.WriteString( "./agility/scripts/")
+	filelocation.WriteString(content)
+	filelocation1 :=filelocation.String()
+	log.Println("file location",filelocation1)
+    payload.WriteString(`<ns1:Script xmlns:ns1="http://servicemesh.com/agility/api"><ns1:name>`)
+    payload.WriteString(scriptname)
+    payload.WriteString(`</ns1:name><ns1:description>`)
+    payload.WriteString(desc)
+    payload.WriteString(`</ns1:description><ns1:operatingSystem>`)
+    payload.WriteString(operatingsystem)
+    payload.WriteString(`</ns1:operatingSystem><ns1:enableExtensions>true</ns1:enableExtensions><ns1:body>`)
+   // payload.WriteString(content)
+  	var file []byte
+	file, err1 := ioutil.ReadFile(filelocation1)
+	if err1 != nil {
+		log.Println("error:", err1)
+	}
+	file1 := string(file)
+	payload.WriteString(file1)
+
+    payload.WriteString(`</ns1:body><ns1:type>Guest</ns1:type><ns1:language><ns1:name>`)
+    payload.WriteString(language)
+    payload.WriteString(`</ns1:name></ns1:language><ns1:runAsAdmin>true</ns1:runAsAdmin><ns1:timeout>3600</ns1:timeout><ns1:retries>0</ns1:retries><ns1:delay>60</ns1:delay><ns1:errorAction>Continue</ns1:errorAction><ns1:rebootRequired>`)
+    payload.WriteString(rebootrequired)
+    payload.WriteString(`</ns1:rebootRequired></ns1:Script>`)
+	payload1 := payload.String()
+	log.Println("Payload1 ===== " , payload1)
+	req, err := http.NewRequest("POST",url.String(),bytes.NewBuffer([]byte(payload1)))
+	req.Header.Set("Content-Type", "application/xml; charset=utf-8")
+	req.SetBasicAuth(username,password)
+
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+
+	// make the HTTPS request
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+    // log the response details for debugging
+    log.Println("response Status:", resp.Status)
+    log.Println("response Headers:", resp.Header)
+
+    //Stream the response body into a byte array and return it
+    body, _ := ioutil.ReadAll(resp.Body)
+    log.Println("response Body:", string(body))
+    return body,nil
+}
+
+func GetScripttId(ResourceData *schema.ResourceData,scriptName string,projecId string, username string, password string) (string, error) {
+
+	var url bytes.Buffer
+	q := new(Result)
+	log.Println("inside getscriptid ")
+	// Create the URL for the call to the Agility API
+	url.WriteString(configuration.APIURL)
+	url.WriteString("current/project/")
+	pid := projecId
+	log.Println("pid === ", pid)
+	url.WriteString(pid)
+	url.WriteString("/script")
+
+	log.Println("URL:>", url.String())
+
+	// Set the right HTTP Verb, and setup HTTP Basic Security
+	req, err := http.NewRequest("GET", url.String(), nil)
+	req.SetBasicAuth(username, password)
+
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+
+	// make the HTTPS request
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	// log the response details for debugging
+	log.Println("response Status:", resp.Status)
+	log.Println("response Headers:", resp.Header)
+
+	//Stream the response body into a byte array
+	body, _ := ioutil.ReadAll(resp.Body)
+	log.Println("response Body:", string(body))
+
+	//Parse the XML
+	r := strings.NewReader(string(body))
+	decoder := xml.NewDecoder(r)
+	finish := false
+	for {
+		// Read tokens from the XML document in a stream.
+		t, _ := decoder.Token()
+		if t == nil {
+			return "", errors.New("there are no scripts with this name")
+		}
+		if finish {
+			break
+		}
+		// look for <link> element
+		switch Element := t.(type) {
+		case xml.StartElement:
+			if Element.Name.Local == "link" {
+				log.Println("Element name is : ", Element.Name.Local)
+
+				// unmarshal the element into generic structure
+				err := decoder.DecodeElement(&q, &Element)
+				if err != nil {
+					log.Println(err)
+				}
+
+				// if the script name matches the script defined to Terraform
+				// then we are are the right place, so stop looking
+				log.Println("Element value is :", string(q.Name))
+				if string(q.Name) == scriptName {
+					log.Println("Found the script : ", q.Name)
+					finish = true
+					break
+				}
+			}
+			// if the element is the <Linklist> then go again
+			if Element.Name.Local == "Linklist" {
+				log.Println("Element name is : ", Element.Name.Local)
+			} else {
+				log.Println("Unknown Element name is : ", Element.Name.Local)
+			}
+		default:
+		}
+
+	}
+	log.Println("script id ", q.Id)
+	// return the ID for the script
+	return string(q.Id), nil
+}
+
+func UploadAttachment(ResourceData *schema.ResourceData,scriptid string,username string, password string)([]byte){
+	f, errf := os.OpenFile("./agility/api/agility.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+	if errf != nil {
+		log.Println("error opening file: ", errf)
+	}
+	defer f.Close()
+
+	log.SetOutput(f)
+	var url bytes.Buffer
+	// Create the URL for the call to the Agility API
+	url.WriteString(configuration.APIURL)
+	url.WriteString("current/script/")
+	url.WriteString(scriptid)
+	url.WriteString("/attachment")
+	log.Println("URL:>", url.String())
+	url1 := url.String()
+	log.Println("URL=====>",url1)
+
+	//String for attachment location
+	attachmentname:=ResourceData.Get("attachmentname").(string)
+	var attachmentlocation bytes.Buffer
+	attachmentlocation.WriteString(`./agility/attachments/`)
+	attachmentlocation.WriteString(attachmentname)
+	attachmentlocation1 := attachmentlocation.String()
+	log.Println("Attachment location=====>",attachmentlocation1)
+
+	var payload bytes.Buffer
+	//Create the payload for the request body
+	payload.WriteString(`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Attachment xmlns="http://servicemesh.com/agility/api"><name>`)
+	payload.WriteString(attachmentname)
+	payload.WriteString(`</name></Attachment>`)
+	payload1:=payload.String()
+	log.Println("Payload=====>",payload1)
+
+	//file, err1 := ioutil.WriteFile("./agility/api/attachment.xml",)
+	log.Println("<=====Executing curl command=====>")
+	methodCall:= "POST"
+	HArgument:= "Content-Type:multipart/mixed"
+	attachmentPayload:=`"file=@/usr/local/Cellar/go/1.9/libexec/src/github.com/csc/csc-agility-terraform-provider-plug-in/agility/attachments/attachment.xml;type=application/xml"`
+	attachment:=`"file=@/usr/local/Cellar/go/1.9/libexec/src/github.com/csc/csc-agility-terraform-provider-plug-in/agility/attachments/a;type=application/x-compressed"`
+	resp := exec.Command("curl", "-u",username+":"+password, "-X",methodCall,"-H",HArgument, "-F",attachmentPayload , "-F",attachment , "-k", url1)
+	resp.Stdout=os.Stdout
+	resp.Stderr=os.Stderr
+
+	resp.Run()
+	log.Println("resp stdout",resp.Stdout)
+	log.Println("resp std err", resp.Stderr)
+	log.Println("Response=====>",resp)
+	//curl -upiyush:07June1990@ -X POST -H "Content-Type:multipart/mixed" -F "file=@/Users/pmohta/Documents/attachment.xml;type=application/xml" -F "file=@/Users/pmohta/Documents/agility-monitor-windows.zip;type=application/x-compressed" -k https://52.31.77.163:8443/agility/api/current/script/1861/attachment
+	//log.Println("Payload1 ===== " , payload1)
+	//req, err := http.NewRequest("POST",url.String(),bytes.NewBuffer([]byte(payload1)))
+	//req.Header.Set("Content-Type", "multipart/mixed; charset=utf-8")
+	//req.SetBasicAuth(username,password)
+	//tr := &http.Transport{
+	//	TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	//}
+	//client := &http.Client{Transport: tr}
+
+	// make the HTTPS request
+	//resp, err := client.Do(req)
+	//if err != nil {
+	//	panic(err)
+	//}
+	//defer resp.Body.Close()
+
+	// log the response details for debugging
+	//log.Println("response Status:", resp.Status)
+	//log.Println("response Headers:", resp.Header)
+
+	//Stream the response body into a byte array and return it
+	//body, _ := ioutil.ReadAll(resp.Body)
+	//log.Println("response Body:", string(body)
+	//return body,nil
+	return nil
 }
