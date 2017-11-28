@@ -10,11 +10,11 @@ provider "agility" {
 }*/
 
 //Create stack
-/*resource "agility_createstack" "stack"{
+/*resource "agility_createstack" "stack" {
     projectname = "POC"
     imagename = "SOE-RHEL-6.5"
     stackname = "SOE-RHEL-6.5-Terraform"
-    stackdescription= "SOE-RHEL-6.5-Terraform"
+    stackdescription = "SOE-RHEL-6.5-Terraform"
     operatingsystem = "Linux"
 }*/
 
@@ -267,3 +267,35 @@ resource "agility_createenvironment" "ProductionPython"{
     environmenttype="PROD"
     depends_on = ["agility_createproject.PythonProject"]
 }*/
+
+
+//create script
+
+resource "agility_createscript" "terraformscript"{
+    scriptname = "StartDetectionInstallTerraform"
+    desc = "StartDetectionInstallTerraform"
+    operatingsystem = "Linux"
+    language = "bash"
+    rebootrequired = "false"
+    projectname = "POC"
+    content = "StartDetectionInstallLinux"
+
+}
+
+/*resource "agility_createscript" "terraformscript"{
+  scriptname = "AgilityMonitorInstallTerraform"
+  desc = "AgilityMonitorInstallTerraform"
+  operatingsystem = "Linux"
+  language = "bash"
+  rebootrequired = "false"
+  projectname = "POC"
+  content = "AgilityMonitorInstallLinux"
+}*/
+
+
+/*resource "agility_attachment" "terraformattachment"{
+  projectname = "POC"
+  scriptname = "AgilityMonitorInstallTerraform"
+  attachmentname = "a"
+}
+*/
