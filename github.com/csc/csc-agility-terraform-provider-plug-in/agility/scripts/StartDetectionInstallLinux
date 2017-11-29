@@ -15,35 +15,35 @@
 PATH=$PATH:/sbin:/usr/sbin
 export PATH
 
-#check to see if the root user is running the script. If yes, unset SUDO
-uid=`id | sed -e 's;^.*uid=;;' -e 's;\([0-9]\)(.*;\1;'`
-if [ "$uid" = "0" ] ; then
-        SUDO=" "
-else
-        SUDO=`which sudo 2>/dev/null`
-        if [ -z "$SUDO" ] ; then
-                echo "ERROR sudo not found!"
-                exit 1
-        fi
+#check to see if the root user is running the script. If yes, unset SUDO 
+        uid=`id | sed -e 's;^.*uid=;;' -e 's;\([0-9]\)(.*;\1;'`
+        if [ "$uid" = "0" ] ; then
+                SUDO=" "
+        else 
+                SUDO=`which sudo 2&gt;/dev/null`
+                if [ -z "$SUDO" ] ; then
+                        echo "ERROR sudo not found!"
+                        exit 1
+                fi
 
-fi
+        fi
 
 $SUDO mkdir -p /opt/announce
 if [ $? -ne 0 ] ; then
-echo "Failed to create /opt/announce directory" 1>&amp;2
-exit 1
+  echo "Failed to create /opt/announce directory" 1&gt;&amp;2
+  exit 1
 fi
 
 $SUDO rm -f /opt/announce/upannounce.sh
-if [ -e $HOME/upannounce.sh ] ; then
-$SUDO cp $HOME/upannounce.sh /opt/announce
+if [ -e $HOME/upannounce.sh ] ; then 
+    $SUDO cp $HOME/upannounce.sh /opt/announce
 else
-echo "ERROR: $HOME/upannounce.sh not found"
-exit 1
+    echo "ERROR: $HOME/upannounce.sh not found"
+    exit 1 
 fi
 if [ $? -ne 0 ] ; then
-echo "Failed to copy"
-exit 1
+  echo "Failed to copy"
+  exit 1
 fi
 
 echo "Created /opt/announce/announce.sh"
@@ -51,23 +51,23 @@ echo "Created /opt/announce/announce.sh"
 UNAME=`uname`
 
 if [ $UNAME = "Linux" ] ; then
-$SUDO chkconfig --del upannounce > /dev/null 2>&amp;1
-$SUDO rm -f /etc/init.d/upannounce
-$SUDO cp /opt/announce/upannounce.sh /etc/init.d/upannounce
-$SUDO chmod 755 /etc/init.d/upannounce
-$SUDO chkconfig --add upannounce
-if [ $? -ne 0 ] ; then
-exit 1
-fi
-echo "Successfully registered upannounce service"
+  $SUDO chkconfig --del upannounce &gt; /dev/null 2&gt;&amp;1
+  $SUDO rm -f /etc/init.d/upannounce
+  $SUDO cp /opt/announce/upannounce.sh /etc/init.d/upannounce
+  $SUDO chmod 755 /etc/init.d/upannounce
+  $SUDO chkconfig --add upannounce
+  if [ $? -ne 0 ] ; then
+    exit 1
+  fi
+  echo "Successfully registered upannounce service"
 elif [ $UNAME = "SunOS" ] ; then
-$SUDO cp /opt/announce/upannounce.sh /etc/init.d/upannounce
-for level in 2 3 ; do
-$SUDO rm -f /etc/rc$level.d/S90upannounce
-$SUDO rm -f /etc/rc$level.d/K20upannounce
-$SUDO /usr/bin/ln -s /etc/init.d/upannounce /etc/rc$level.d/S90upannounce
-$SUDO /usr/bin/ln -s /etc/init.d/upannounce /etc/rc$level.d/K20upannounce
-done
-$SUDO /usr/bin/chmod 755 /etc/init.d/upannounce
-echo "Successfully registered upannounce service"
+  $SUDO cp /opt/announce/upannounce.sh /etc/init.d/upannounce
+  for level in 2 3 ; do 
+    $SUDO rm -f /etc/rc$level.d/S90upannounce
+    $SUDO rm -f /etc/rc$level.d/K20upannounce
+    $SUDO /usr/bin/ln -s /etc/init.d/upannounce /etc/rc$level.d/S90upannounce
+    $SUDO /usr/bin/ln -s /etc/init.d/upannounce /etc/rc$level.d/K20upannounce  
+  done
+  $SUDO /usr/bin/chmod 755 /etc/init.d/upannounce
+  echo "Successfully registered upannounce service"
 fi
