@@ -1,0 +1,94 @@
+#!/bin/bash 
+# COPYRIGHT (C) 2008-2012 SERVICEMESH, INC.  ALL RIGHTS RESERVED.  CONFIDENTIAL
+# AND PROPRIETARY.
+
+# ALL SOFTWARE, INFORMATION AND ANY OTHER RELATED COMMUNICATIONS (COLLECTIVELY,
+# "WORKS") ARE CONFIDENTIAL AND PROPRIETARY INFORMATION THAT ARE THE EXCLUSIVE
+# PROPERTY OF SERVICEMESH.  ALL WORKS ARE PROVIDED UNDER THE APPLICABLE
+# AGREEMENT OR END USER LICENSE AGREEMENT IN EFFECT BETWEEN YOU AND
+# SERVICEMESH.  UNLESS OTHERWISE SPECIFIED IN THE APPLICABLE AGREEMENT, ALL
+# WORKS ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND EITHER EXPRESSED OR
+# IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.  ALL USE, DISCLOSURE
+# AND/OR REPRODUCTION OF WORKS NOT EXPRESSLY AUTHORIZED BY SERVICEMESH IS
+# STRICTLY PROHIBITED.
+PATH=$PATH:/sbin:/usr/sbin
+export PATH
+
+if [[ "$AGILITY_OPERATING_SYSTEM" =~ "Ubuntu" ]] ; then 
+	# Change to Ubuntu Location
+	CCONF=/etc/collectd/collectd.conf
+       CCONF_DIR=/etc/collectd
+else
+	# Default is RHEL Location
+	CCONF=/etc/collectd.conf
+	CCONF_DIR=/etc
+fi
+
+#check to see if the root user is running the script. If yes, unset SUDO
+        uid=`id | sed -e 's;^.*uid=;;' -e 's;\([0-9]\)(.*;\1;'`
+        if [ "$uid" = "0" ] ; then
+                SUDO=" "
+        else
+                SUDO=`which sudo 2&gt;/dev/null`
+                if [ -z "$SUDO" ] ; then
+                        echo "ERROR sudo not found!"
+                        exit 1
+                fi
+
+        fi
+
+#make directory if does not exist
+if [ ! -e $CCONF_DIR ] ; then
+	$SUDO mkdir -p $CCONF_DIR
+fi
+
+# configure collectd
+#
+echo "####################"
+echo "Downloading $CCONF"
+echo "$SUDO curl --insecure --silent --connect-timeout 5 ${Manager.Protocol}://${Manager.Address}:${Manager.Port}/agility/instance/collectd.jsp -d uuid=${Instance.UUID}  --output $CCONF "
+
+$SUDO curl --insecure --silent --connect-timeout 5 ${Manager.Protocol}://${Manager.Address}:${Manager.Port}/agility/instance/collectd.jsp -d uuid=${Instance.UUID}  --output $CCONF 
+
+libdir="lib"
+ARCH=`uname -i`
+if [ "$ARCH" == "x86_64" ] ; then
+ libdir="lib64" 
+fi
+
+if [ $? -eq 0 ]  ; then
+    words=`$SUDO wc -w $CCONF | awk {'print $1'}`
+    if [ $words -eq  0 ] ; then
+        echo "Unable to get collectd.conf: empty"
+        exit 1
+    fi
+    if [[ "$AGILITY_OPERATING_SYSTEM" =~ "Ubuntu" ]] ; then 
+		# If we are using Ubuntu, a little touch-up to the collectd.conf is needed
+    	$SUDO sed -ri 's/BaseDir.*"\/opt\/collectd\/var\/lib\/collectd"/BaseDir\t\t"\/var\/lib\/collectd"/g' $CCONF
+		$SUDO sed -ri 's/PIDFile.*\/opt\/collectd\/var\/run\/collectd.pid"/PIDFile\t\t"\/var\/run\/collectd.pid"/g' $CCONF
+		$SUDO sed -ri 's/PluginDir.*"\/opt\/collectd\/lib\/collectd"/PluginDir\t"\/usr\/lib\/collectd"/g' $CCONF
+		$SUDO sed -ri 's/TypesDB.*"\/opt\/collectd\/share\/collectd\/types.db"/TypesDB\t\t"\/usr\/share\/collectd\/types.db"/g' $CCONF
+		$SUDO sed -ri '/&lt;Plugin logfile&gt;/,/&lt;\/Plugin&gt;/ s/File.*"\/opt\/collectd\/log\/collectd.log"/File\t\t"\/var\/log\/collectd.log"/g' $CCONF
+	else
+		# If we are using RHEL, also a little touch-up by creating some symlinks
+		$SUDO mkdir -p /opt/collectd/lib
+		$SUDO ln -s /usr/$libdir/collectd /opt/collectd/lib/collectd
+		$SUDO mkdir -p /opt/collectd/var/lib
+		$SUDO ln -s /var/lib/collectd /opt/collectd/var/lib/collectd
+		$SUDO mkdir -p /opt/collectd/share/collectd
+		$SUDO ln -s /usr/share/collectd/types.db /opt/collectd/share/collectd/types.db
+		$SUDO mkdir -p /opt/collectd/var/run/
+		$SUDO mkdir -p /opt/collectd/log/
+	fi
+    ( nohup $SUDO  service collectd  restart ) 2&gt;&amp;1 &gt;/dev/null &lt;/dev/null
+    $SUDO service collectd status
+else
+	echo "Unable to configure collectd"
+	exit 1
+fi;
+
+# adjust iptables to allow collectd output
+#
+$SUDO iptables --insert OUTPUT -s 0.0.0.0/0 -d 0.0.0.0/0 -p udp --dport 8649 -j ACCEPT
+$SUDO /etc/init.d/iptables save
