@@ -2046,3 +2046,111 @@ func UploadAttachment(ResourceData *schema.ResourceData,scriptid string,username
 	//return body,nil
 	return nil
 }
+
+func CreatePackage(ResourceData *schema.ResourceData, projectId string, username string, password string)([]byte, error){
+    f, errf := os.OpenFile("./agility/api/agility.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+    if errf != nil {
+        log.Println("error opening file: ", errf)
+    }
+    defer f.Close()
+
+    log.SetOutput(f)
+
+    var url bytes.Buffer
+    // Create the URL for the call to the Agility API
+    url.WriteString(configuration.APIURL)
+    url.WriteString("current/project/")
+    url.WriteString(projectId)
+    url.WriteString("/package")
+    log.Println("URL:>", url.String())
+
+    //payload
+    var payload bytes.Buffer
+    packagename := ResourceData.Get("packagename").(string)
+    packagedescription :=ResourceData.Get("packagedescription").(string)
+    operatingsystem :=ResourceData.Get("operatingsystem").(string)
+    installscriptname1 := ResourceData.Get("installscriptname1").(string)
+    installscriptid1,err := GetScripttId(ResourceData,installscriptname1,projectId,username,password)
+    installscriptname2 := ResourceData.Get("installscriptname2").(string)
+    installscriptid2,err := GetScripttId(ResourceData,installscriptname2,projectId,username,password)
+    startupscriptname1 := ResourceData.Get("startupscriptname1").(string)
+    startupscriptid1,err := GetScripttId(ResourceData,startupscriptname1,projectId,username,password)
+    startupscriptname2 := ResourceData.Get("startupscriptname2").(string)
+    startupscriptid2,err := GetScripttId(ResourceData,startupscriptname2,projectId,username,password)
+    operationalscriptname1 := ResourceData.Get("operationalscriptname1").(string)
+    operationalscriptid1,err := GetScripttId(ResourceData,operationalscriptname1,projectId,username,password)
+    operationalscriptname2 := ResourceData.Get("operationalscriptname2").(string)
+    operationalscriptid2,err := GetScripttId(ResourceData,operationalscriptname2,projectId,username,password)
+    operationalscriptname3 := ResourceData.Get("operationalscriptname3").(string)
+    operationalscriptid3,err := GetScripttId(ResourceData,operationalscriptname3,projectId,username,password)
+    operationalscriptname4 := ResourceData.Get("operationalscriptname4").(string)
+    operationalscriptid4,err := GetScripttId(ResourceData,operationalscriptname4,projectId,username,password)
+    log.Println("Install script name 1=====>",installscriptname1)
+    log.Println("Install script id 1=====>",installscriptid1)
+    log.Println("Install script name 2=====>",installscriptname2)
+    log.Println("Install script id 2=====>",installscriptid2)
+    log.Println("Startup script name 1=====>",startupscriptname1)
+    log.Println("Startup script id 1=====>",startupscriptid1)
+    log.Println("Startup script name 2=====>",startupscriptname2)
+    log.Println("Startup script id 2=====>",startupscriptid2)
+    log.Println("Operational script name 1=====>",operationalscriptname1)
+    log.Println("Operational script id 1=====>",operationalscriptid1)
+    log.Println("Operational script name 2=====>",operationalscriptname2)
+    log.Println("Operational script id 2=====>",operationalscriptid2)
+    log.Println("Operational script name 3=====>",operationalscriptname3)
+    log.Println("Operational script id 3=====>",operationalscriptid3)
+    log.Println("Operational script name 4=====>",operationalscriptname4)
+    log.Println("Operational script id 4=====>",operationalscriptid4)
+
+    //Create the payload
+
+    payload.WriteString(`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns1:Package xmlns:ns1="http://servicemesh.com/agility/api"><ns1:name>`)
+    payload.WriteString(packagename)
+    payload.WriteString(`</ns1:name><ns1:description>`)
+    payload.WriteString(packagedescription)
+    payload.WriteString(`</ns1:description><ns1:operatingSystem>`)
+    payload.WriteString(operatingsystem)
+    payload.WriteString(`</ns1:operatingSystem><ns1:install><ns1:id>`)
+    payload.WriteString(installscriptid1)
+    payload.WriteString(`</ns1:id></ns1:install><ns1:install><ns1:id>`)
+    payload.WriteString(installscriptid2)
+    payload.WriteString(`</ns1:id></ns1:install><ns1:startup><ns1:id>`)
+    payload.WriteString(startupscriptid1)
+    payload.WriteString(`</ns1:id></ns1:startup><ns1:startup><ns1:id>`)
+    payload.WriteString(startupscriptid2)
+    payload.WriteString(`</ns1:id></ns1:startup><ns1:operational><ns1:id>`)
+    payload.WriteString(operationalscriptid1)
+    payload.WriteString(`</ns1:id></ns1:operational><ns1:operational><ns1:id>`)
+    payload.WriteString(operationalscriptid2)
+    payload.WriteString(`</ns1:id></ns1:operational><ns1:operational><ns1:id>`)
+    payload.WriteString(operationalscriptid3)
+    payload.WriteString(`</ns1:id></ns1:operational><ns1:operational><ns1:id>`)
+    payload.WriteString(operationalscriptid4)
+    payload.WriteString(`</ns1:id></ns1:operational></ns1:Package>`)
+    payload1 := payload.String()
+    log.Println("Payload1 =====>" , payload1)
+    req, err := http.NewRequest("POST",url.String(),bytes.NewBuffer([]byte(payload1)))
+    req.Header.Set("Content-Type", "application/xml; charset=utf-8")
+    req.SetBasicAuth(username,password)
+
+    tr := &http.Transport{
+        TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+    }
+    client := &http.Client{Transport: tr}
+
+    // make the HTTPS request
+    resp, err := client.Do(req)
+    if err != nil {
+        panic(err)
+    }
+    defer resp.Body.Close()
+
+    // log the response details for debugging
+    log.Println("response Status:", resp.Status)
+    log.Println("response Headers:", resp.Header)
+
+    //Stream the response body into a byte array and return it
+    body, _ := ioutil.ReadAll(resp.Body)
+    log.Println("response Body:", string(body))
+    return body,nil
+}
