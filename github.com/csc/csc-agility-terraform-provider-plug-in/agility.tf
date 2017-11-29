@@ -1,8 +1,8 @@
 variable "agility_userid" {}
 variable "agility_password" {}
 provider "agility" {
-    userid = "${var.agility_userid}"
-    password = "${var.agility_password}"
+  userid = "${var.agility_userid}"
+  password = "${var.agility_password}"
 }
 
 //License upload
@@ -314,7 +314,7 @@ resource "agility_createenvironment" "ProductionPython"{
 
 }*/
 
-resource "agility_createpackage" "terraformpackage"{
+/*resource "agility_createpackage" "terraformpackage"{
   projectname = "POC"
   packagename = "AgilityMonitorLinuxTerraform"
   packagedescription="AgilityMonitorLinuxTerraform"
@@ -331,3 +331,56 @@ resource "agility_createpackage" "terraformpackage"{
   //shutdownscriptname2=""
 
 }
+*/
+
+/*resource "agility_firewall" "terraformfirewall"{
+  projectname = "POC"
+  firewallname = "CollectorFirewallTerraform"
+  firewalldesc="CollectorFirewallTerraform"
+  direction="Input"
+  protocolprefix="0.0.0.0/0"
+  protocolallowed="true"
+  firewalltype="Firewall"
+
+  protocolname1="HTTPS"
+  protocoldesc1="HTTPS"
+  protocolminport1="8443"
+  protocolmaxport1="8443"
+  protocol1="tcp"
+
+  protocolname2="RealTimeMonitoring"
+  protocoldesc2="RealTimeMonitoring"
+  protocolminport2="2187"
+  protocolmaxport2="2187"
+  protocol2="tcp"
+
+  protocolname3="AgilityMonitorTcp"
+  protocoldesc3="AgilityMonitorTcp"
+  protocolminport3="8649"
+  protocolmaxport3="8649"
+  protocol3="tcp"
+
+  protocolname4="AgilityMonitorUdp"
+  protocoldesc4="AgilityMonitorUdp"
+  protocolminport4="8649"
+  protocolmaxport4="8649"
+  protocol4="udp"
+}
+*/
+
+/*resource "agility_scriptcheckin" "scriptcheckinterraform"{
+  containername="Root"
+  headversionallowed="true"
+  scriptname="StartDetectionConfigTerraform"
+  projectname="POC"
+}
+
+
+resource "agility_approve"  "approve"{
+  projectname="POC"
+  assetname="StartDetectionConfigTerraform"
+  asset="script"
+  state="approve"
+  comment="approved"
+  depends_on = ["agility_scriptcheckin.scriptcheckinterraform"]
+}*/
