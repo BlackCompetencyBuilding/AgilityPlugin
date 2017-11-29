@@ -271,17 +271,6 @@ resource "agility_createenvironment" "ProductionPython"{
 
 //create script
 
-resource "agility_createscript" "terraformscript"{
-    scriptname = "StartDetectionInstallTerraform"
-    desc = "StartDetectionInstallTerraform"
-    operatingsystem = "Linux"
-    language = "bash"
-    rebootrequired = "false"
-    projectname = "POC"
-    content = "StartDetectionInstallLinux"
-
-}
-
 /*resource "agility_createscript" "terraformscript"{
   scriptname = "AgilityMonitorInstallTerraform"
   desc = "AgilityMonitorInstallTerraform"
@@ -292,10 +281,53 @@ resource "agility_createscript" "terraformscript"{
   content = "AgilityMonitorInstallLinux"
 }*/
 
+/*resource "agility_createscript" "terraformscript"{
+    scriptname = "StartDetectionInstallTerraform"
+    desc = "StartDetectionInstallTerraform"
+    operatingsystem = "Linux"
+    language = "bash"
+    rebootrequired = "false"
+    projectname = "POC"
+    content = "StartDetectionInstallLinux"
 
-/*resource "agility_attachment" "terraformattachment"{
+}*/
+
+/*resource "agility_createscript" "terraformscript"{
+    scriptname = "AgilityMonitorConfigTerraform"
+    desc = "AgilityMonitorConfigTerraform"
+    operatingsystem = "Linux"
+    language = "bash"
+    rebootrequired = "false"
+    projectname = "POC"
+    content = "AgilityMonitorConfigLinux"
+
+}*/
+
+/*resource "agility_createscript" "terraformscript"{
+  scriptname = "StartDetectionConfigTerraform"
+  desc = "StartDetectionConfigTerraform"
+  operatingsystem = "Linux"
+  language = "bash"
+  rebootrequired = "false"
   projectname = "POC"
-  scriptname = "AgilityMonitorInstallTerraform"
-  attachmentname = "a"
+  content = "StartDetectionConfigLinux"
+
+}*/
+
+resource "agility_createpackage" "terraformpackage"{
+  projectname = "POC"
+  packagename = "AgilityMonitorLinuxTerraform"
+  packagedescription="AgilityMonitorLinuxTerraform"
+  operatingsystem = "Linux"
+  installscriptname1= "AgilityMonitorInstallTerraform"
+  installscriptname2= "StartDetectionInstallTerraform"
+  startupscriptname1="AgilityMonitorConfigTerraform"
+  startupscriptname2="StartDetectionConfigTerraform"
+  operationalscriptname1="AgilityMonitorInstallTerraform"
+  operationalscriptname2="StartDetectionInstallTerraform"
+  operationalscriptname3="AgilityMonitorConfigTerraform"
+  operationalscriptname4="StartDetectionConfigTerraform"
+  //shutdownscriptname1=""
+  //shutdownscriptname2=""
+
 }
-*/
