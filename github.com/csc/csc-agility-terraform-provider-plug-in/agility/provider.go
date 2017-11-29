@@ -35,8 +35,11 @@ func Provider() terraform.ResourceProvider {
 			//"agility_createstack":			resourceCreateStack(),
 			//"agility_createscript":				resourceCreateScript(),
 			//"agility_attachment":					resourceAttachment(),
-			"agility_createpackage":				resourceCreatePackage(),
-			},
+			//"agility_createpackage":				resourceCreatePackage(),
+			//"agility_firewall":						resourceFirewall(),
+			"agility_scriptcheckin":					resourceScriptCheckIn(),
+			"agility_approve":							resourceApprove(),
+		},
 
 		ConfigureFunc: providerConfigure,
 	}
