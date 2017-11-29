@@ -15,21 +15,11 @@
 PATH=$PATH:/sbin:/usr/sbin
 export PATH
 
-if [[ "$AGILITY_OPERATING_SYSTEM" =~ "Ubuntu" ]] ; then 
-	# Change to Ubuntu Location
-	CCONF=/etc/collectd/collectd.conf
-       CCONF_DIR=/etc/collectd
-else
-	# Default is RHEL Location
-	CCONF=/etc/collectd.conf
-	CCONF_DIR=/etc
-fi
-
-#check to see if the root user is running the script. If yes, unset SUDO
+#check to see if the root user is running the script. If yes, unset SUDO 
         uid=`id | sed -e 's;^.*uid=;;' -e 's;\([0-9]\)(.*;\1;'`
         if [ "$uid" = "0" ] ; then
                 SUDO=" "
-        else
+        else 
                 SUDO=`which sudo 2&gt;/dev/null`
                 if [ -z "$SUDO" ] ; then
                         echo "ERROR sudo not found!"
@@ -38,57 +28,116 @@ fi
 
         fi
 
-#make directory if does not exist
-if [ ! -e $CCONF_DIR ] ; then
-	$SUDO mkdir -p $CCONF_DIR
-fi
-
-# configure collectd
 #
-echo "####################"
-echo "Downloading $CCONF"
-echo "$SUDO curl --insecure --silent --connect-timeout 5 ${Manager.Protocol}://${Manager.Address}:${Manager.Port}/agility/instance/collectd.jsp -d uuid=${Instance.UUID}  --output $CCONF "
+# Remove gmond and gmetd if they exist on the system
+#
 
-$SUDO curl --insecure --silent --connect-timeout 5 ${Manager.Protocol}://${Manager.Address}:${Manager.Port}/agility/instance/collectd.jsp -d uuid=${Instance.UUID}  --output $CCONF 
-
-libdir="lib"
-ARCH=`uname -i`
-if [ "$ARCH" == "x86_64" ] ; then
- libdir="lib64" 
+if [ -f /etc/init.d/gmond ] ; then
+    $SUDO /sbin/service gmond stop &gt;/dev/null 2&gt;&amp;1
+    $SUDO /sbin/chkconfig gmod off &gt;/dev/null 2&gt;&amp;1
+    $SUDO /bin/rm /etc/init.d/gmond &gt;/dev/null 2&gt;&amp;1
+    $SUDO /usr/bin/find /etc -name '*gmond' -exec /bin/rm -rf '{}' \; 
+    $SUDO rm -rf /usr/include/ganglia.h &gt;/dev/null 2&gt;&amp;1
+    $SUDO /bin/rm -rf /usr/include/ganglia_gexec.h &gt;/dev/null 2&gt;&amp;1
+    $SUDO /bin/rm -rf /usr/bin/ganglia-config &gt;/dev/null 2&gt;&amp;1
+    $SUDO /bin/rm -rf /usr/lib/ganglia &gt;/dev/null 2&gt;&amp;1
+    $SUDO /bin/rm -rf /etc/gmond.conf &gt;/dev/null 2&gt;&amp;1
+    $SUDO /bin/rm -rf /usr/sbin/gmond  &gt;/dev/null 2&gt;&amp;1
+fi
+if [ -f /etc/init.d/gmetad ] ; then
+    $SUDO /sbin/service gmetad stop &gt;/dev/null 2&gt;&amp;1
+    $SUDO /sbin/chkconfig gmetad off &gt;/dev/null 2&gt;&amp;1
+    $SUDO /bin/rm /etc/init.d/gmetad 
+    $SUDO /usr/bin/find /etc -name '*gmetad' -exec /bin/rm -rf '{}' \; 
+    $SUDO /bin/rm -rf /usr/sbin/gmetad  &gt;/dev/null 2&gt;&amp;1
 fi
 
-if [ $? -eq 0 ]  ; then
-    words=`$SUDO wc -w $CCONF | awk {'print $1'}`
-    if [ $words -eq  0 ] ; then
-        echo "Unable to get collectd.conf: empty"
-        exit 1
-    fi
-    if [[ "$AGILITY_OPERATING_SYSTEM" =~ "Ubuntu" ]] ; then 
-		# If we are using Ubuntu, a little touch-up to the collectd.conf is needed
-    	$SUDO sed -ri 's/BaseDir.*"\/opt\/collectd\/var\/lib\/collectd"/BaseDir\t\t"\/var\/lib\/collectd"/g' $CCONF
-		$SUDO sed -ri 's/PIDFile.*\/opt\/collectd\/var\/run\/collectd.pid"/PIDFile\t\t"\/var\/run\/collectd.pid"/g' $CCONF
-		$SUDO sed -ri 's/PluginDir.*"\/opt\/collectd\/lib\/collectd"/PluginDir\t"\/usr\/lib\/collectd"/g' $CCONF
-		$SUDO sed -ri 's/TypesDB.*"\/opt\/collectd\/share\/collectd\/types.db"/TypesDB\t\t"\/usr\/share\/collectd\/types.db"/g' $CCONF
-		$SUDO sed -ri '/&lt;Plugin logfile&gt;/,/&lt;\/Plugin&gt;/ s/File.*"\/opt\/collectd\/log\/collectd.log"/File\t\t"\/var\/log\/collectd.log"/g' $CCONF
-	else
-		# If we are using RHEL, also a little touch-up by creating some symlinks
-		$SUDO mkdir -p /opt/collectd/lib
-		$SUDO ln -s /usr/$libdir/collectd /opt/collectd/lib/collectd
-		$SUDO mkdir -p /opt/collectd/var/lib
-		$SUDO ln -s /var/lib/collectd /opt/collectd/var/lib/collectd
-		$SUDO mkdir -p /opt/collectd/share/collectd
-		$SUDO ln -s /usr/share/collectd/types.db /opt/collectd/share/collectd/types.db
-		$SUDO mkdir -p /opt/collectd/var/run/
-		$SUDO mkdir -p /opt/collectd/log/
-	fi
-    ( nohup $SUDO  service collectd  restart ) 2&gt;&amp;1 &gt;/dev/null &lt;/dev/null
-    $SUDO service collectd status
+
+#
+# collectd
+#
+
+if [ -d /opt/collectd ];
+then
+    $SUDO /etc/init.d/collectd stop
+    $SUDO chkconfig --del collectd &gt;/dev/null 2&gt;&amp;1
+    $SUDO rm -rf /opt/collectd*
+fi
+
+if [[ "$AGILITY_OPERATING_SYSTEM" =~ "Ubuntu" ]] ; then 
+    # Change to Ubuntu Collectd 10.2 Archive
+        ARCHIVE=$HOME/collectd-4.10.2-ubuntu.tgz
 else
-	echo "Unable to configure collectd"
-	exit 1
-fi;
+    # Default is RHEL 4.10.9 Archive
+        ARCHIVE=$HOME/collectd-4.10.9-rhel.tgz
+fi
 
-# adjust iptables to allow collectd output
-#
-$SUDO iptables --insert OUTPUT -s 0.0.0.0/0 -d 0.0.0.0/0 -p udp --dport 8649 -j ACCEPT
-$SUDO /etc/init.d/iptables save
+if [ -e $ARCHIVE ] ; then
+    cd $HOME 
+    $SUDO tar -zxf $ARCHIVE
+    $SUDO rm $ARCHIVE
+else
+    echo "Collectd $ARCHIVE file  not found!"
+    exit 1 
+fi
+ARCH=`uname -i`
+OSVER=`uname -a`
+RHEL6='^.*\.(el6).*'
+    case $ARCH in
+        i386)
+            if [[ "$AGILITY_OPERATING_SYSTEM" =~ "Ubuntu" ]] ; then 
+                # Change to Ubuntu Packages
+                PACKAGE=*.deb
+                PACKAGE_DIR=collectd-4.10.1-ubuntu/collectd_4.10.1_i386/
+                COMMAND=dpkg
+            else
+                # Default is RHEL Packages
+                PACKAGE=*.rpm
+                if [[ $OSVER =~ $RHEL6 ]]; then
+                    PACKAGE_DIR=collectd-4.10.9-rhel/collectd-4.10.9-el6-i386/
+                else
+                    PACKAGE_DIR=collectd-4.10.9-rhel/collectd-4.10.9-el5-i386/
+                fi
+                FORCE=--force
+                COMMAND=rpm
+            fi
+        ;;
+        x86_64)
+            if [[ "$AGILITY_OPERATING_SYSTEM" =~ "Ubuntu" ]] ; then 
+                # Change to Ubuntu Packages
+                PACKAGE=*.deb
+                PACKAGE_DIR=collectd-4.10.1-ubuntu/collectd_4.10.1_amd64/
+                COMMAND=dpkg
+            else
+                # Default is RHEL Package
+                PACKAGE=*.rpm
+                if [[ $OSVER =~ $RHEL6 ]]; then
+                    PACKAGE_DIR=collectd-4.10.9-rhel/collectd-4.10.9-el6-x86_64/
+                else
+                    PACKAGE_DIR=collectd-4.10.9-rhel/collectd-4.10.9-el5-x86_64/
+                fi
+                FORCE=--force
+                COMMAND=rpm
+            fi  
+
+        ;;
+        *)
+            echo "=================================="
+            echo "Unsupported hardware platform $ARCH"
+            echo "=================================="
+            exit 1 
+        ;;
+    esac
+    
+FILETEST=`ls $HOME/$PACKAGE_DIR$PACKAGE`
+
+if [ $? -ne "0" ] ; then
+    echo "Install $PACKAGE_DIR$PACKAGE not Found"
+    exit 1 
+else
+    cd $HOME
+    $SUDO $COMMAND -i $FORCE $PACKAGE_DIR$PACKAGE
+fi
+$SUDO chmod 755 /etc/init.d/collectd
+$SUDO chkconfig --add collectd &gt;/dev/null 2&gt;&amp;1
+$SUDO chkconfig collectd on &gt;/dev/null 2&gt;&amp;1
