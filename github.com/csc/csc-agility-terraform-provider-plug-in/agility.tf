@@ -279,8 +279,8 @@ resource "agility_createenvironment" "ProductionPython"{
   rebootrequired = "false"
   projectname = "POC"
   content = "AgilityMonitorInstallLinux"
-}*/
-
+}
+*/
 /*resource "agility_createscript" "terraformscript"{
     scriptname = "StartDetectionInstallTerraform"
     desc = "StartDetectionInstallTerraform"
@@ -290,9 +290,10 @@ resource "agility_createenvironment" "ProductionPython"{
     projectname = "POC"
     content = "StartDetectionInstallLinux"
 
-}*/
-
-/*resource "agility_createscript" "terraformscript"{
+}
+*/
+/*
+resource "agility_createscript" "terraformscript"{
     scriptname = "AgilityMonitorConfigTerraform"
     desc = "AgilityMonitorConfigTerraform"
     operatingsystem = "Linux"
@@ -301,9 +302,10 @@ resource "agility_createenvironment" "ProductionPython"{
     projectname = "POC"
     content = "AgilityMonitorConfigLinux"
 
-}*/
-
-/*resource "agility_createscript" "terraformscript"{
+}
+*/
+/*
+resource "agility_createscript" "terraformscript"{
   scriptname = "StartDetectionConfigTerraform"
   desc = "StartDetectionConfigTerraform"
   operatingsystem = "Linux"
@@ -312,8 +314,8 @@ resource "agility_createenvironment" "ProductionPython"{
   projectname = "POC"
   content = "StartDetectionConfigLinux"
 
-}*/
-
+}
+*/
 /*resource "agility_createpackage" "terraformpackage"{
   projectname = "POC"
   packagename = "AgilityMonitorLinuxTerraform"
@@ -368,19 +370,42 @@ resource "agility_createenvironment" "ProductionPython"{
 }
 */
 
-/*resource "agility_scriptcheckin" "scriptcheckinterraform"{
+resource "agility_checkin" "checkinterraform"{
   containername="Root"
   headversionallowed="true"
-  scriptname="StartDetectionConfigTerraform"
+  assetname="SOE-RHEL-6.5-Terraform"
+  asset="blueprint"
   projectname="POC"
 }
 
 
 resource "agility_approve"  "approve"{
   projectname="POC"
-  assetname="StartDetectionConfigTerraform"
-  asset="script"
+  assetname="SOE-RHEL-6.5-Terraform"
+  asset="blueprint"
   state="approve"
   comment="approved"
-  depends_on = ["agility_scriptcheckin.scriptcheckinterraform"]
-}*/
+  depends_on = ["agility_checkin.checkinterraform"]
+}
+
+/*resource "agility_headversion" "version" {
+  asset="script"
+  projectname="POC"
+}
+*/
+
+/*
+resource "agility_blueprint" "createblueprintterraform"{
+
+  projectname="POC"
+  blueprintname="SOE-RHEL-6.5-Terraform"
+  blueprintdesc="SOE-RHEL-6.5-Terraform"
+  stackname="SOE-RHEL-6.5-Terraform"
+  packagename="AgilityMonitorLinuxTerraform"
+  policyname="CollectorFirewallTerraform"
+  headversionallowed="true"
+  workloadname="SOE-RHEL-6.5-Terraform"
+  policyassignmentname="CollectorFirewallTerraform"
+
+}
+*/
