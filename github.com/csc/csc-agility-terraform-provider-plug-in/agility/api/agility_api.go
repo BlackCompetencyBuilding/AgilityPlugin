@@ -2303,7 +2303,7 @@ func CreateFirewallPolicy(ResourceData *schema.ResourceData, projectId string, u
 	return body,nil
 }
 
-func ScriptCheckIn(ResourceData *schema.ResourceData, projectId string, username string, password string)([]byte, error){
+func CheckIn(ResourceData *schema.ResourceData, projectId string, username string, password string)([]byte, error){
 
 	f, errf := os.OpenFile("./agility/api/agility.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
 	if errf != nil {
@@ -2312,10 +2312,41 @@ func ScriptCheckIn(ResourceData *schema.ResourceData, projectId string, username
 	defer f.Close()
 
 	log.SetOutput(f)
-	scriptname := ResourceData.Get("scriptname").(string)
-	scriptid, err := GetScripttId(ResourceData,scriptname,projectId,username,password)
-	if err != nil {
-		log.Println("no script found with the name: ", scriptname)
+	assetname := ResourceData.Get("assetname").(string)
+	asset:=ResourceData.Get("asset").(string)
+	var aid string
+	if asset=="script"{
+		assetid,err := GetScripttId(ResourceData,assetname,projectId,username,password)
+		if err != nil {
+			log.Println("no script found with the name: ", assetname)
+		}
+		aid=assetid
+	} else if asset == "package" {
+		assetid,err:=GetPackageId(ResourceData,assetname,projectId,username,password)
+		if err != nil {
+			log.Println("no package found with the name: ", assetname)
+		}
+		aid=assetid
+	} else if asset == "stack"{
+		assetid,err:=GetStackId(ResourceData,assetname,username,password)
+		if err != nil {
+			log.Println("no stack found with the name: ", assetname)
+		}
+		aid=assetid
+	} else if asset == "blueprint"{
+		assetid,err:=GetBlueprintId(assetname,projectId,username,password)
+		if err != nil {
+			log.Println("no blueprint found with the name: ", assetname)
+		}
+		aid=assetid
+	} else if asset == "policy"{
+		assetid,err:=GetPolicyId(ResourceData,assetname,projectId,username,password)
+		if err != nil {
+			log.Println("no policy found with the name: ", assetname)
+		}
+		aid=assetid
+	} else{
+		log.Println("please enter a valid asset")
 	}
 	containername:=ResourceData.Get("containername").(string)
 	containerid,err1:=GetContainerId(containername,username,password)
@@ -2327,8 +2358,10 @@ func ScriptCheckIn(ResourceData *schema.ResourceData, projectId string, username
 	var url bytes.Buffer
 	// Create the URL for the call to the Agility API
 	url.WriteString(configuration.APIURL)
-	url.WriteString("current/script/")
-	url.WriteString(scriptid)
+	url.WriteString("current/")
+	url.WriteString(asset)
+	url.WriteString("/")
+	url.WriteString(aid)
 	url.WriteString("/checkin")
 
 	log.Println("URL:>", url.String())
@@ -2393,9 +2426,28 @@ func Approve(ResourceData *schema.ResourceData, projectId string, username strin
 			log.Println("no script found with the name: ", assetname)
 		}
 		aid=assetid
-	} else if assetname == "package" {
-		/* write code to compute package id   */
-	}else{
+	} else if asset == "package" {
+		assetid,err:=GetPackageId(ResourceData,assetname,projectId,username,password)
+		if err != nil {
+			log.Println("no package found with the name: ", assetname)
+		}
+		aid=assetid
+	} else if asset == "stack"{
+		assetid,err:=GetStackId(ResourceData,assetname,username,password)
+		if err != nil {
+			log.Println("no stack found with the name: ", assetname)
+		}
+		aid=assetid
+	} else if asset == "blueprint"{
+		assetid,err:=GetBlueprintId(assetname,projectId,username,password)
+		if err != nil {
+			log.Println("no blueprint found with the name: ", assetname)
+		}
+		aid=assetid
+	} else if asset == "policy" {
+		log.Println(" the asset is a policy , no need for approval")
+	} else
+	{
 		log.Println("please enter a valid asset")
 	}
 	state:=ResourceData.Get("state").(string)
@@ -2446,4 +2498,352 @@ func Approve(ResourceData *schema.ResourceData, projectId string, username strin
 	log.Println("response Body:", string(body))
 	return body,nil
 
+}
+
+func GetPackageId(ResourceData *schema.ResourceData,packageName string,projecId string, username string, password string) (string, error) {
+
+	var url bytes.Buffer
+	q := new(Result)
+
+	// Create the URL for the call to the Agility API
+	url.WriteString(configuration.APIURL)
+	url.WriteString("current/project/")
+	pid := projecId
+	url.WriteString(pid)
+	url.WriteString("/package")
+
+	log.Println("URL:>", url.String())
+
+	// Set the right HTTP Verb, and setup HTTP Basic Security
+	req, err := http.NewRequest("GET", url.String(), nil)
+	req.SetBasicAuth(username, password)
+
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+
+	// make the HTTPS request
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	// log the response details for debugging
+	log.Println("response Status:", resp.Status)
+	log.Println("response Headers:", resp.Header)
+
+	//Stream the response body into a byte array
+	body, _ := ioutil.ReadAll(resp.Body)
+	log.Println("response Body:", string(body))
+
+	//Parse the XML
+	r := strings.NewReader(string(body))
+	decoder := xml.NewDecoder(r)
+	finish := false
+	for {
+		// Read tokens from the XML document in a stream.
+		t, _ := decoder.Token()
+		if t == nil {
+			return "", errors.New("there are no package with this name")
+		}
+		if finish {
+			break
+		}
+		// look for <link> element
+		switch Element := t.(type) {
+		case xml.StartElement:
+			if Element.Name.Local == "link" {
+				log.Println("Element name is : ", Element.Name.Local)
+
+				// unmarshal the element into generic structure
+				err := decoder.DecodeElement(&q, &Element)
+				if err != nil {
+					log.Println(err)
+				}
+
+				// if the script name matches the script defined to Terraform
+				// then we are are the right place, so stop looking
+				log.Println("Element value is :", string(q.Name))
+				if string(q.Name) == packageName {
+					log.Println("Found the package : ", q.Name)
+					finish = true
+					break
+				}
+			}
+			// if the element is the <Linklist> then go again
+			if Element.Name.Local == "Linklist" {
+				log.Println("Element name is : ", Element.Name.Local)
+			} else {
+				log.Println("Unknown Element name is : ", Element.Name.Local)
+			}
+		default:
+		}
+
+	}
+	log.Println("package id ", q.Id)
+	// return the ID for the script
+	return string(q.Id), nil
+}
+
+
+func GetStackId(ResourceData *schema.ResourceData,stackName string, username string, password string) (string, error) {
+
+	var url bytes.Buffer
+	q := new(Result)
+
+	// Create the URL for the call to the Agility API
+	url.WriteString(configuration.APIURL)
+	url.WriteString("current/stack")
+
+
+	log.Println("URL:>", url.String())
+
+	// Set the right HTTP Verb, and setup HTTP Basic Security
+	req, err := http.NewRequest("GET", url.String(), nil)
+	req.SetBasicAuth(username, password)
+
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+
+	// make the HTTPS request
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	// log the response details for debugging
+	log.Println("response Status:", resp.Status)
+	log.Println("response Headers:", resp.Header)
+
+	//Stream the response body into a byte array
+	body, _ := ioutil.ReadAll(resp.Body)
+	log.Println("response Body:", string(body))
+
+	//Parse the XML
+	r := strings.NewReader(string(body))
+	decoder := xml.NewDecoder(r)
+	finish := false
+	for {
+		// Read tokens from the XML document in a stream.
+		t, _ := decoder.Token()
+		if t == nil {
+			return "", errors.New("there are no stack with this name")
+		}
+		if finish {
+			break
+		}
+		// look for <link> element
+		switch Element := t.(type) {
+		case xml.StartElement:
+			if Element.Name.Local == "link" {
+				log.Println("Element name is : ", Element.Name.Local)
+
+				// unmarshal the element into generic structure
+				err := decoder.DecodeElement(&q, &Element)
+				if err != nil {
+					log.Println(err)
+				}
+
+				// if the script name matches the script defined to Terraform
+				// then we are are the right place, so stop looking
+				log.Println("Element value is :", string(q.Name))
+				if string(q.Name) == stackName {
+					log.Println("Found the stack : ", q.Name)
+					finish = true
+					break
+				}
+			}
+			// if the element is the <Linklist> then go again
+			if Element.Name.Local == "Linklist" {
+				log.Println("Element name is : ", Element.Name.Local)
+			} else {
+				log.Println("Unknown Element name is : ", Element.Name.Local)
+			}
+		default:
+		}
+
+	}
+	log.Println("stack id ", q.Id)
+	// return the ID for the script
+	return string(q.Id), nil
+}
+
+func GetPolicyId(ResourceData *schema.ResourceData,policyName string,projecId string, username string, password string) (string, error) {
+
+	var url bytes.Buffer
+	q := new(Result)
+
+	// Create the URL for the call to the Agility API
+	url.WriteString(configuration.APIURL)
+	url.WriteString("current/project/")
+	pid := projecId
+	url.WriteString(pid)
+	url.WriteString("/policy")
+
+	log.Println("URL:>", url.String())
+
+	// Set the right HTTP Verb, and setup HTTP Basic Security
+	req, err := http.NewRequest("GET", url.String(), nil)
+	req.SetBasicAuth(username, password)
+
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+
+	// make the HTTPS request
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	// log the response details for debugging
+	log.Println("response Status:", resp.Status)
+	log.Println("response Headers:", resp.Header)
+
+	//Stream the response body into a byte array
+	body, _ := ioutil.ReadAll(resp.Body)
+	log.Println("response Body:", string(body))
+
+	//Parse the XML
+	r := strings.NewReader(string(body))
+	decoder := xml.NewDecoder(r)
+	finish := false
+	for {
+		// Read tokens from the XML document in a stream.
+		t, _ := decoder.Token()
+		if t == nil {
+			return "", errors.New("there are no policy with this name")
+		}
+		if finish {
+			break
+		}
+		// look for <link> element
+		switch Element := t.(type) {
+		case xml.StartElement:
+			if Element.Name.Local == "link" {
+				log.Println("Element name is : ", Element.Name.Local)
+
+				// unmarshal the element into generic structure
+				err := decoder.DecodeElement(&q, &Element)
+				if err != nil {
+					log.Println(err)
+				}
+
+				// if the script name matches the script defined to Terraform
+				// then we are are the right place, so stop looking
+				log.Println("Element value is :", string(q.Name))
+				if string(q.Name) == policyName {
+					log.Println("Found the policy : ", q.Name)
+					finish = true
+					break
+				}
+			}
+			// if the element is the <Linklist> then go again
+			if Element.Name.Local == "Linklist" {
+				log.Println("Element name is : ", Element.Name.Local)
+			} else {
+				log.Println("Unknown Element name is : ", Element.Name.Local)
+			}
+		default:
+		}
+
+	}
+	log.Println("policy id ", q.Id)
+	// return the ID for the script
+	return string(q.Id), nil
+}
+
+func CreateBlueprint(ResourceData *schema.ResourceData,projectId string, username string, password string) ([]byte, error) {
+
+	f, errf := os.OpenFile("./agility/api/agility.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+	if errf != nil {
+		log.Println("error opening file: ", errf)
+	}
+	defer f.Close()
+
+	log.SetOutput(f)
+
+	blueprintname:=ResourceData.Get("blueprintname").(string)
+	blueprintdesc:=ResourceData.Get("blueprintdesc").(string)
+	stackname:=ResourceData.Get("stackname").(string)
+	packagename:=ResourceData.Get("packagename").(string)
+	policyname:=ResourceData.Get("policyname").(string)
+	headversionallowed:=ResourceData.Get("headversionallowed").(string)
+	workloadname:=ResourceData.Get("workloadname").(string)
+	policyassignmentname:=ResourceData.Get("policyassignmentname").(string)
+	stackid,err:=GetStackId(ResourceData,stackname,username,password)
+	if err != nil {
+		log.Println("error opening file: ", err)
+	}
+	packageid,err1:=GetPackageId(ResourceData,packagename,projectId,username,password)
+	if err1 != nil {
+		log.Println("error opening file: ", err1)
+	}
+	policyid,err2:=GetPolicyId(ResourceData,policyname,projectId,username,password)
+	if err2 != nil {
+		log.Println("error opening file: ", err2)
+	}
+
+	var url bytes.Buffer
+	// Create the URL for the call to the Agility API
+	url.WriteString(configuration.APIURL)
+	url.WriteString("current/project/")
+	url.WriteString(projectId)
+	url.WriteString("/blueprint")
+	log.Println("URL:>", url.String())
+
+	//payload
+	var payload bytes.Buffer
+	payload.WriteString(`<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns1:Blueprint xmlns:ns1="http://servicemesh.com/agility/api"><ns1:name>`)
+	payload.WriteString(blueprintname)
+	payload.WriteString(`</ns1:name><ns1:description>`)
+	payload.WriteString(blueprintdesc)
+	payload.WriteString(`</ns1:description><ns1:policyAssignment><ns1:name>`)
+	payload.WriteString(policyassignmentname)
+	payload.WriteString(`</ns1:name><ns1:policy xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns1:VersionedItemLink"><ns1:id>`)
+	payload.WriteString(policyid)
+	payload.WriteString(`</ns1:id><ns1:type>application/com.servicemesh.agility.api.Policy+xml</ns1:type></ns1:policy></ns1:policyAssignment><ns1:headAllowed>`)
+	payload.WriteString(headversionallowed)
+	payload.WriteString(`</ns1:headAllowed><ns1:anyOrderItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns1:Workload"><ns1:name>`)
+	payload.WriteString(workloadname)
+	payload.WriteString(`</ns1:name><ns1:packages xsi:type="ns1:VersionedItemLink"><ns1:id>`)
+	payload.WriteString(packageid)
+	payload.WriteString(`</ns1:id></ns1:packages><ns1:baseStack xsi:type="ns1:VersionedItemLink"><ns1:id>`)
+	payload.WriteString(stackid)
+	payload.WriteString(`</ns1:id></ns1:baseStack></ns1:anyOrderItem></ns1:Blueprint>`)
+
+	payload1 := payload.String()
+	log.Println("payload====>",payload1)
+
+	req, err := http.NewRequest("POST",url.String(),bytes.NewBuffer([]byte(payload1)))
+	req.Header.Set("Content-Type", "application/xml; charset=utf-8")
+	req.SetBasicAuth(username,password)
+
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+
+	// make the HTTPS request
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	// log the response details for debugging
+	log.Println("response Status:", resp.Status)
+	log.Println("response Headers:", resp.Header)
+
+	//Stream the response body into a byte array and return it
+	body, _ := ioutil.ReadAll(resp.Body)
+	log.Println("response Body:", string(body))
+	return body,nil
 }
