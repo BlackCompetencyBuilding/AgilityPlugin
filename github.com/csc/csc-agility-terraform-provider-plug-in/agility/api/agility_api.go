@@ -1739,7 +1739,7 @@ func GetImageId(imageName string, username string, password string) (string, err
 	return string(q.Id), nil
 }
 
-func CreateStack(ResourceData *schema.ResourceData, projectId string, imageId string, username string, password string) ([]byte, error){
+/*func CreateStack(ResourceData *schema.ResourceData, projectId string, imageId string, username string, password string) ([]byte, error){
 	f, errf := os.OpenFile("./agility/api/agility.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
 	if errf != nil {
 		log.Println("error opening file: ", errf)
@@ -1803,7 +1803,7 @@ func CreateStack(ResourceData *schema.ResourceData, projectId string, imageId st
 	log.Println("response Body:", string(body))
 	return body,nil
 }
-
+*/
 func CreateScript(ResourceData *schema.ResourceData, projectId string,username string, password string)([]byte, error){
 	f, errf := os.OpenFile("./agility/api/agility.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
 	if errf != nil {
@@ -2778,6 +2778,13 @@ func CreateBlueprint(ResourceData *schema.ResourceData,projectId string, usernam
 	headversionallowed:=ResourceData.Get("headversionallowed").(string)
 	workloadname:=ResourceData.Get("workloadname").(string)
 	policyassignmentname:=ResourceData.Get("policyassignmentname").(string)
+	log.Println("project id ", projectId)
+	log.Println("policy assignment name", policyassignmentname)
+
+	policyassignmentid,err3:=GetPolicyAssignmentId(ResourceData,policyassignmentname,projectId,username,password)
+	if err3 != nil {
+		log.Println("error opening file: ", err3)
+	}
 	stackid,err:=GetStackId(ResourceData,stackname,username,password)
 	if err != nil {
 		log.Println("error opening file: ", err)
@@ -2790,7 +2797,7 @@ func CreateBlueprint(ResourceData *schema.ResourceData,projectId string, usernam
 	if err2 != nil {
 		log.Println("error opening file: ", err2)
 	}
-
+	log.Println("policy assignment id ", policyassignmentid)
 	var url bytes.Buffer
 	// Create the URL for the call to the Agility API
 	url.WriteString(configuration.APIURL)
@@ -2807,7 +2814,9 @@ func CreateBlueprint(ResourceData *schema.ResourceData,projectId string, usernam
 	payload.WriteString(blueprintdesc)
 	payload.WriteString(`</ns1:description><ns1:policyAssignment><ns1:name>`)
 	payload.WriteString(policyassignmentname)
-	payload.WriteString(`</ns1:name><ns1:policy xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns1:VersionedItemLink"><ns1:id>`)
+	payload.WriteString(`</ns1:name><ns1:id>`)
+	payload.WriteString(policyassignmentid)
+	payload.WriteString(`</ns1:id><ns1:policy xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="ns1:VersionedItemLink"><ns1:id>`)
 	payload.WriteString(policyid)
 	payload.WriteString(`</ns1:id><ns1:type>application/com.servicemesh.agility.api.Policy+xml</ns1:type></ns1:policy></ns1:policyAssignment><ns1:headAllowed>`)
 	payload.WriteString(headversionallowed)
@@ -2846,4 +2855,473 @@ func CreateBlueprint(ResourceData *schema.ResourceData,projectId string, usernam
 	body, _ := ioutil.ReadAll(resp.Body)
 	log.Println("response Body:", string(body))
 	return body,nil
+}
+func AssignPolicy(ResourceData *schema.ResourceData,projectId string, username string, password string) ([]byte, error) {
+
+	f, errf := os.OpenFile("./agility/api/agility.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+	if errf != nil {
+		log.Println("error opening file: ", errf)
+	}
+	defer f.Close()
+
+	log.SetOutput(f)
+
+	policyname:=ResourceData.Get("policyname").(string)
+	policyid,err:=GetAllPolicy(ResourceData,policyname,username,password)
+	if err != nil {
+		log.Println("there is no policy found with this name : ", policyname)
+	}
+	log.Println("policy id ",policyid)
+
+	var url bytes.Buffer
+	// Create the URL for the call to the Agility API
+	url.WriteString(configuration.APIURL)
+	url.WriteString("current/project/")
+	url.WriteString(projectId)
+	url.WriteString("/policy/")
+	url.WriteString(policyid)
+	log.Println("URL:>", url.String())
+
+	req, err := http.NewRequest("PUT", url.String(), nil)
+	req.Header.Set("Content-Type", "application/xml; charset=utf-8")
+	req.SetBasicAuth(username, password)
+
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+
+	// make the HTTPS request
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	// log the response details for debugging
+	log.Println("response Status:", resp.Status)
+	log.Println("response Headers:", resp.Header)
+
+	//Stream the response body into a byte array and return it
+	body, _ := ioutil.ReadAll(resp.Body)
+	log.Println("response Body:", string(body))
+	return body,nil
+
+}
+
+func UnassignPolicy(ResourceData *schema.ResourceData,projectId string, username string, password string) ([]byte, error) {
+
+	f, errf := os.OpenFile("./agility/api/agility.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+	if errf != nil {
+		log.Println("error opening file: ", errf)
+	}
+	defer f.Close()
+
+	log.SetOutput(f)
+
+	policyname:=ResourceData.Get("policyname").(string)
+	policyid,err:=GetPolicyId(ResourceData,policyname,projectId,username,password)
+	if err != nil {
+		log.Println("there is no policy found with this name : ", policyname)
+	}
+
+	var url bytes.Buffer
+	// Create the URL for the call to the Agility API
+	url.WriteString(configuration.APIURL)
+	url.WriteString("current/project/")
+	url.WriteString(projectId)
+	url.WriteString("/policy/")
+	url.WriteString(policyid)
+	log.Println("URL:>", url.String())
+
+	req, err := http.NewRequest("DELETE", url.String(), nil)
+	req.Header.Set("Content-Type", "application/xml; charset=utf-8")
+	req.SetBasicAuth(username, password)
+
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+
+	// make the HTTPS request
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	// log the response details for debugging
+	log.Println("response Status:", resp.Status)
+	log.Println("response Headers:", resp.Header)
+
+	//Stream the response body into a byte array and return it
+	body, _ := ioutil.ReadAll(resp.Body)
+	log.Println("response Body:", string(body))
+	return body,nil
+
+}
+
+func GetAllPolicy(ResourceData *schema.ResourceData,policyName string, username string, password string) (string, error) {
+
+	var url bytes.Buffer
+	q := new(Result)
+
+	// Create the URL for the call to the Agility API
+	url.WriteString(configuration.APIURL)
+	url.WriteString("current/")
+	url.WriteString("policy")
+
+	log.Println("URL:>", url.String())
+
+	// Set the right HTTP Verb, and setup HTTP Basic Security
+	req, err := http.NewRequest("GET", url.String(), nil)
+	req.SetBasicAuth(username, password)
+
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+
+	// make the HTTPS request
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	// log the response details for debugging
+	log.Println("response Status:", resp.Status)
+	log.Println("response Headers:", resp.Header)
+
+	//Stream the response body into a byte array
+	body, _ := ioutil.ReadAll(resp.Body)
+	log.Println("response Body:", string(body))
+
+	//Parse the XML
+	r := strings.NewReader(string(body))
+	decoder := xml.NewDecoder(r)
+	finish := false
+	for {
+		// Read tokens from the XML document in a stream.
+		t, _ := decoder.Token()
+		if t == nil {
+			return "", errors.New("there are no policy with this name")
+		}
+		if finish {
+			break
+		}
+		// look for <link> element
+		switch Element := t.(type) {
+		case xml.StartElement:
+			if Element.Name.Local == "link" {
+				log.Println("Element name is : ", Element.Name.Local)
+
+				// unmarshal the element into generic structure
+				err := decoder.DecodeElement(&q, &Element)
+				if err != nil {
+					log.Println(err)
+				}
+
+				// if the script name matches the script defined to Terraform
+				// then we are are the right place, so stop looking
+				log.Println("Element value is :", string(q.Name))
+				if string(q.Name) == policyName {
+					log.Println("Found the policy : ", q.Name)
+					finish = true
+					break
+				}
+			}
+			// if the element is the <Linklist> then go again
+			if Element.Name.Local == "Linklist" {
+				log.Println("Element name is : ", Element.Name.Local)
+			} else {
+				log.Println("Unknown Element name is : ", Element.Name.Local)
+			}
+		default:
+		}
+
+	}
+	log.Println("policy id ", q.Id)
+	// return the ID for the script
+	return string(q.Id), nil
+}
+func GetPolicyAssignmentId(ResourceData *schema.ResourceData,policyAssignmentName string,projectId string ,username string, password string) (string, error) {
+	log.Println("inside policy assignment id")
+	var url bytes.Buffer
+	q := new(Result)
+
+	// Create the URL for the call to the Agility API
+	url.WriteString(configuration.APIURL)
+	url.WriteString("current/project/")
+	url.WriteString(projectId)
+	url.WriteString("/policyassignment/search")
+
+	log.Println("URL:>", url.String())
+
+	// Set the right HTTP Verb, and setup HTTP Basic Security
+	req, err := http.NewRequest("GET", url.String(), nil)
+	req.SetBasicAuth(username, password)
+
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+
+	// make the HTTPS request
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	// log the response details for debugging
+	log.Println("response Status:", resp.Status)
+	log.Println("response Headers:", resp.Header)
+
+	//Stream the response body into a byte array
+	body, _ := ioutil.ReadAll(resp.Body)
+	log.Println("response Body:", string(body))
+
+	//Parse the XML
+	r := strings.NewReader(string(body))
+	decoder := xml.NewDecoder(r)
+	finish := false
+	for {
+		// Read tokens from the XML document in a stream.
+		t, _ := decoder.Token()
+		if t == nil {
+			return "", errors.New("there are no policy assignments with this name")
+		}
+		if finish {
+			break
+		}
+		// look for <link> element
+		switch Element := t.(type) {
+		case xml.StartElement:
+			if Element.Name.Local == "link" {
+				log.Println("Element name is : ", Element.Name.Local)
+
+				// unmarshal the element into generic structure
+				err := decoder.DecodeElement(&q, &Element)
+				if err != nil {
+					log.Println(err)
+				}
+
+				// if the script name matches the script defined to Terraform
+				// then we are are the right place, so stop looking
+				log.Println("Element value is :", string(q.Name))
+				if string(q.Name) == policyAssignmentName {
+					log.Println("Found the policy assignment: ", q.Name)
+					finish = true
+					break
+				}
+			}
+			// if the element is the <Linklist> then go again
+			if Element.Name.Local == "Linklist" {
+				log.Println("Element name is : ", Element.Name.Local)
+			} else {
+				log.Println("Unknown Element name is : ", Element.Name.Local)
+			}
+		default:
+		}
+
+	}
+	log.Println("policyassignment id ", q.Id)
+	// return the ID for the script
+	return string(q.Id), nil
+}
+
+func CreateStack (username string, password string) []byte{
+
+	var url bytes.Buffer
+	// Create the URL for the call to the Agility API
+	url.WriteString(configuration.APIURL)
+	url.WriteString("current/stack/")
+	log.Println("URL:>", url.String())
+	//reading payload from AgilityLicense file
+	file, err1 := ioutil.ReadFile("./agility/api/stackwithpolicy.xml")
+	if err1 != nil {
+		log.Println("error:", err1)
+	}
+
+	//Payload code ends
+
+	log.Println("URL:>",url.String())
+	req, err := http.NewRequest("POST", url.String(),bytes.NewBuffer([]byte(file)))
+	req.Header.Set("Content-Type", "application/xml; charset=utf-8")
+	req.SetBasicAuth(username, password)
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+
+	// make the HTTPS request
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	// log the response details for debugging
+	log.Println("response Status:", resp.Status)
+	log.Println("response Headers:", resp.Header)
+
+	//Stream the response body into a byte array and return it
+	body, _ := ioutil.ReadAll(resp.Body)
+	log.Println("response Body:", resp.Body)
+	return body
+}
+
+func Publish(ResourceData *schema.ResourceData,username string, password string)([]byte, error){
+
+	f, errf := os.OpenFile("./agility/api/agility.log", os.O_RDWR | os.O_CREATE | os.O_APPEND, 0666)
+	if errf != nil {
+		log.Println("error opening file: ", errf)
+	}
+	defer f.Close()
+
+	log.SetOutput(f)
+	log.Println("inside publish func")
+	var url bytes.Buffer
+	// Create the URL for the call to the Agility API
+	url.WriteString(configuration.APIURL)
+	url.WriteString("current/storeproduct/")
+	log.Println("URL:>", url.String())
+
+	productname:=ResourceData.Get("productname").(string)
+	productdesc:=ResourceData.Get("productdesc").(string)
+	producttype:=ResourceData.Get("producttype").(string)
+	itemtype:=ResourceData.Get("itemtype").(string)
+	itemname:=ResourceData.Get("itemname").(string)
+	category:=ResourceData.Get("category").(string)
+	operatingsystem:=ResourceData.Get("operatingsystem").(string)
+	assetid,err:=GetBlueprintIdAfterCheckin(productname,username,password)
+	if err != nil {
+		log.Println("cannot get blueprint id ", err)
+	}
+
+	//payload
+	var payload bytes.Buffer
+	payload.WriteString(`<ns1:StoreProduct xmlns:ns1="http://servicemesh.com/agility/api"><ns1:name>`)
+	payload.WriteString(productname)
+	payload.WriteString(`</ns1:name><ns1:description>`)
+	payload.WriteString(productdesc)
+	payload.WriteString(`</ns1:description><ns1:productType><ns1:name>`)
+	payload.WriteString(producttype)
+	payload.WriteString(`</ns1:name></ns1:productType><ns1:itemId>`)
+	payload.WriteString(assetid)
+	payload.WriteString(`</ns1:itemId><ns1:itemType>`)
+	payload.WriteString(itemtype)
+	payload.WriteString(`</ns1:itemType><ns1:itemName>`)
+	payload.WriteString(itemname)
+	payload.WriteString(`</ns1:itemName><ns1:category><ns1:name>`)
+	payload.WriteString(category)
+	payload.WriteString(`</ns1:name></ns1:category><ns1:category><ns1:name>`)
+	payload.WriteString(operatingsystem)
+	payload.WriteString(`</ns1:name></ns1:category></ns1:StoreProduct>`)
+	payload1 := payload.String()
+	log.Println("payload====>",payload1)
+
+	req, err := http.NewRequest("POST",url.String(),bytes.NewBuffer([]byte(payload1)))
+	req.Header.Set("Content-Type", "application/xml; charset=utf-8")
+	req.SetBasicAuth(username,password)
+
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+
+	// make the HTTPS request
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	// log the response details for debugging
+	log.Println("response Status:", resp.Status)
+	log.Println("response Headers:", resp.Header)
+
+	//Stream the response body into a byte array and return it
+	body, _ := ioutil.ReadAll(resp.Body)
+	log.Println("response Body:", string(body))
+	return body,nil
+
+}
+
+func GetBlueprintIdAfterCheckin(blueprintName string,username string, password string) (string, error) {
+	log.Println("The Blueprint name is: ", blueprintName)
+	var url bytes.Buffer
+	q := new(Result)
+
+	// Create the URL for the call to the Agility API
+	url.WriteString(configuration.APIURL)
+	url.WriteString("current/blueprint/")
+	log.Println("URL:>", url.String())
+
+	// Set the right HTTP Verb, and setup HTTP Basic Security
+	req, err := http.NewRequest("GET", url.String(), nil)
+	req.SetBasicAuth(username, password)
+
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+
+	// make the HTTPS request
+	resp, err := client.Do(req)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+
+	// log the response details for debugging
+	log.Println("response Status:", resp.Status)
+	log.Println("response Headers:", resp.Header)
+
+	//Stream the response body into a byte array
+	body, _ := ioutil.ReadAll(resp.Body)
+	log.Println("response Body:", string(body))
+
+	//Parse the XML
+	r := strings.NewReader(string(body))
+	decoder := xml.NewDecoder(r)
+	finish := false
+	for {
+		// Read tokens from the XML document in a stream.
+		t, _ := decoder.Token()
+		if t == nil {
+			return "", errors.New("there are no Blueprints with this name")
+		}
+		if finish {
+			break
+		}
+		// look for <link> element
+		switch Element := t.(type) {
+		case xml.StartElement:
+			if Element.Name.Local == "link" {
+				log.Println("Element name is : ", Element.Name.Local)
+
+				// unmarshal the element into generic structure
+				err := decoder.DecodeElement(&q, &Element)
+				if err != nil {
+					log.Println(err)
+				}
+
+				// if the blueprint name matches the blueprint defined to Terraform
+				// then we are are the right place, so stop looking
+				log.Println("Element value is :", string(q.Name))
+				if string(q.Name) == blueprintName {
+					log.Println("Found the Blueprint : ", q.Name)
+					finish = true
+					break
+				}
+			}
+		default:
+		}
+
+	}
+
+	// return the ID for the blueprint
+	return string(q.Id), nil
 }
