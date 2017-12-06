@@ -10,14 +10,15 @@ provider "agility" {
 }*/
 
 //Create stack
-/*resource "agility_createstack" "stack" {
-    projectname = "POC"
+/*
+resource "agility_createstack" "stack" {
+    projectname = "Agility Factory"
     imagename = "SOE-RHEL-6.5"
     stackname = "SOE-RHEL-6.5-Terraform"
     stackdescription = "SOE-RHEL-6.5-Terraform"
     operatingsystem = "Linux"
-}*/
-
+}
+*/
 //Add and sync cloud provider
 /*resource "agility_addcloudprovider" "AWS" {
 cloudname = "PM-AWS"
@@ -270,54 +271,58 @@ resource "agility_createenvironment" "ProductionPython"{
 
 
 //create script
-
-/*resource "agility_createscript" "terraformscript"{
+/*
+resource "agility_createscript" "terraformscript1"{
   scriptname = "AgilityMonitorInstallTerraform"
   desc = "AgilityMonitorInstallTerraform"
   operatingsystem = "Linux"
   language = "bash"
   rebootrequired = "false"
-  projectname = "POC"
+  projectname = "Agility Factory"
   content = "AgilityMonitorInstallLinux"
+  depends_on = ["agility_createstack.stack"]
 }
-*/
-/*resource "agility_createscript" "terraformscript"{
+
+resource "agility_createscript" "terraformscript2"{
     scriptname = "StartDetectionInstallTerraform"
     desc = "StartDetectionInstallTerraform"
     operatingsystem = "Linux"
     language = "bash"
     rebootrequired = "false"
-    projectname = "POC"
+    projectname = "Agility Factory"
     content = "StartDetectionInstallLinux"
+    depends_on = ["agility_createscript.terraformscript1"]
 
 }
-*/
-/*
-resource "agility_createscript" "terraformscript"{
+
+
+resource "agility_createscript" "terraformscript3"{
     scriptname = "AgilityMonitorConfigTerraform"
     desc = "AgilityMonitorConfigTerraform"
     operatingsystem = "Linux"
     language = "bash"
     rebootrequired = "false"
-    projectname = "POC"
+    projectname = "Agility Factory"
     content = "AgilityMonitorConfigLinux"
+  depends_on = ["agility_createscript.terraformscript2"]
 
 }
-*/
-/*
-resource "agility_createscript" "terraformscript"{
+
+
+resource "agility_createscript" "terraformscript4"{
   scriptname = "StartDetectionConfigTerraform"
   desc = "StartDetectionConfigTerraform"
   operatingsystem = "Linux"
   language = "bash"
   rebootrequired = "false"
-  projectname = "POC"
+  projectname = "Agility Factory"
   content = "StartDetectionConfigLinux"
+  depends_on = ["agility_createscript.terraformscript3"]
 
 }
-*/
-/*resource "agility_createpackage" "terraformpackage"{
-  projectname = "POC"
+
+resource "agility_createpackage" "terraformpackage"{
+  projectname = "Agility Factory"
   packagename = "AgilityMonitorLinuxTerraform"
   packagedescription="AgilityMonitorLinuxTerraform"
   operatingsystem = "Linux"
@@ -331,12 +336,12 @@ resource "agility_createscript" "terraformscript"{
   operationalscriptname4="StartDetectionConfigTerraform"
   //shutdownscriptname1=""
   //shutdownscriptname2=""
-
+  depends_on = ["agility_createscript.terraformscript4"]
 }
-*/
 
-/*resource "agility_firewall" "terraformfirewall"{
-  projectname = "POC"
+
+resource "agility_firewall" "terraformfirewall"{
+  projectname = "Agility Factory"
   firewallname = "CollectorFirewallTerraform"
   firewalldesc="CollectorFirewallTerraform"
   direction="Input"
@@ -367,45 +372,69 @@ resource "agility_createscript" "terraformscript"{
   protocolminport4="8649"
   protocolmaxport4="8649"
   protocol4="udp"
+ depends_on = ["agility_createpackage.terraformpackage"]
 }
 */
-
+/*
 resource "agility_checkin" "checkinterraform"{
   containername="Root"
   headversionallowed="true"
   assetname="SOE-RHEL-6.5-Terraform"
   asset="blueprint"
-  projectname="POC"
+  projectname="Agility Factory"
 }
 
 
 resource "agility_approve"  "approve"{
-  projectname="POC"
+  projectname="Agility Factory"
   assetname="SOE-RHEL-6.5-Terraform"
   asset="blueprint"
   state="approve"
   comment="approved"
   depends_on = ["agility_checkin.checkinterraform"]
 }
-
+*/
 /*resource "agility_headversion" "version" {
   asset="script"
-  projectname="POC"
+  projectname="Agility Factory"
 }
 */
-
 /*
+resource "agility_assignpolicy" "assignpolicyterraform"{
+  projectname="Agility Factory"
+  policyname="CollectorFirewallTerraform"
+ depends_on = ["agility_firewall.terraformfirewall"]
+}
+
 resource "agility_blueprint" "createblueprintterraform"{
 
-  projectname="POC"
+  projectname="Agility Factory"
   blueprintname="SOE-RHEL-6.5-Terraform"
   blueprintdesc="SOE-RHEL-6.5-Terraform"
-  stackname="SOE-RHEL-6.5-Terraform"
+  stackname="Ankit-new"
   packagename="AgilityMonitorLinuxTerraform"
   policyname="CollectorFirewallTerraform"
   headversionallowed="true"
-  workloadname="SOE-RHEL-6.5-Terraform"
+  workloadname="Ankit-new"
   policyassignmentname="CollectorFirewallTerraform"
+  depends_on = ["agility_assignpolicy.assignpolicyterraform"]
 
 }
+
+resource "agility_unassignpolicy" "unassignpolicyterraform"{
+  projectname="Agility Factory"
+  policyname="CollectorFirewallTerraform"
+  depends_on = ["agility_blueprint.createblueprintterraform"]
+}
 */
+
+//as best practice we are publishing from root container
+resource "agility_publish" "terraformblueprint" {
+  productname="SOE-RHEL-6.5-Terraform"
+  productdesc="SOE-RHEL-6.5-Terraform"
+  producttype="blueprint"
+  itemtype="blueprint"
+  itemname="SOE-RHEL-6.5-Terraform"
+  category="Featured Products"
+  operatingsystem="Linux"
+}
